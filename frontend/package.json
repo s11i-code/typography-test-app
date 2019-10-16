@@ -66,8 +66,11 @@
     "eslint-config-blvd": "^0.1.1",
     "eslint-config-prettier": "^5.0.0",
     "eslint-plugin-prettier": "^3.1.0",
+    "gatsby-plugin-tslint": "0.0.2",
     "gh-pages": "^2.0.1",
     "prettier": "^1.18.2",
-    "rimraf": "^2.6.3"
+    "rimraf": "^2.6.3",
+    "tslint": "^5.20.0",
+    "tslint-loader": "^3.5.4"
   }
 }
