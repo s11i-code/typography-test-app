@@ -1,0 +1,20 @@
+service:
+  name: typography-test-app-backend
+
+plugins:
+  - serverless-webpack
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs10.x
+  profile: satu-personal-cli
+  region: eu-central-1
+
+functions:
+  hello:
+    handler: handler.hello
+    events:
+      - http:
+          method: get
+          path: hello
