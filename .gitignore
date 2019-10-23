@@ -5,6 +5,8 @@
 # Build directory
 public/
 
+backend/tmp
+
 # Gatsby cache
 .cache/
 
