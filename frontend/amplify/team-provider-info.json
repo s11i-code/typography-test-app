@@ -1,0 +1,14 @@
+{
+    "production": {
+        "awscloudformation": {
+            "AuthRoleName": "typography-test-app-production-20191016150306-authRole",
+            "UnauthRoleArn": "arn:aws:iam::734068139494:role/typography-test-app-production-20191016150306-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::734068139494:role/typography-test-app-production-20191016150306-authRole",
+            "Region": "eu-central-1",
+            "DeploymentBucketName": "typography-test-app-production-20191016150306-deployment",
+            "UnauthRoleName": "typography-test-app-production-20191016150306-unauthRole",
+            "StackName": "typography-test-app-production-20191016150306",
+            "StackId": "arn:aws:cloudformation:eu-central-1:734068139494:stack/typography-test-app-production-20191016150306/ea27a010-f00c-11e9-929d-0ac5bdeb388c"
+        }
+    }
+}
