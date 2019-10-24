@@ -1,12 +1,12 @@
+// tslint:disable: no-console
 const getContrast = require("get-contrast");
 const fs = require("fs");
 const puppeteer = require("puppeteer");
-const sanitizeFilename = require("sanitize-filename");
 
-const sites = ["https://github.com/satueveliina", "https://www.smartly.io/", "https://yle.fi/"];
-const resolutions = [{width: 960, height: 800}, {width: 375, height: 900}, {width: 375, height: 450}];
 const typographicElements = ["h1", "h2", "h3", "h4", "h5", "h6", "p", "a"];
-// tslint:disable: no-console
+const sites = require('../backend/common').sites;
+const resolutions = require('../backend/common').resolutions;
+const getFolderPath = require('../backend/common').getFolderPath;
 
 // aws s3 sync backend/tmp/ s3://typography-test-app-sites  --profile satu-personal-cli --acl public-read
 function isInViewport(bounding) {
@@ -18,11 +18,6 @@ function isInViewport(bounding) {
     );
 }
 
-function getFolderPath(site, resolution) {
-    const cleanedSite = site.replace("http://", "").replace("https://", "");
-
-    return `tmp/${sanitizeFilename(cleanedSite)}/${resolution}`;
-}
 async function writeJSON(path, data) {
     const jsonString = JSON.stringify(data);
     return fs.promises.mkdir(path, { recursive: true }, (err) => {
