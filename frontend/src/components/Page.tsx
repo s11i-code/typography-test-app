@@ -1,15 +1,28 @@
 import styled from "@emotion/styled";
+import Amplify from "aws-amplify";
 import * as React from "react";
 
+import config from "../config";
 import { dimensions } from "../styles/variables";
 
 const StyledPage = styled.div`
   display: block;
   flex: 1;
   position: relative;
-  padding: ${dimensions.containerPadding}rem;
   margin-bottom: 3rem;
 `;
+
+Amplify.configure({
+  API: {
+    endpoints: [
+      {
+        endpoint: config.apiGateway.URL,
+        name: "sites",
+        region: config.apiGateway.REGION,
+      },
+    ],
+  },
+});
 
 interface PageProps {
   className?: string;
