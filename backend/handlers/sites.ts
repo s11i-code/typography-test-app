@@ -1,7 +1,7 @@
 import { APIGatewayProxyHandler } from 'aws-lambda';
 import 'source-map-support/register';
 import S3 from 'aws-sdk/clients/s3';
-import {sites, resolutions, getS3FolderPath} from '../common/index.js';
+import {sites, resolutions, getS3FolderPath} from '../common/index';
 
 const s3 = new S3();
 const resolution = resolutions[0];
