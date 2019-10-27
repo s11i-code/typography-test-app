@@ -3,7 +3,7 @@
 
 export const colors = {
   accent: "#ffb238",
-  brand: "#663399",
+  brand: "rgb(74, 105, 189)",
   lilac: "#9d7cbf",
   success: "#37b635",
   warning: "#ec1818",
@@ -18,7 +18,7 @@ export const colors = {
     copy: "hsla(270, 15.797828016000002%, 0%, 0.88)",
     dark: "hsla(270, 17.119554496%, 0%, 0.92)",
   },
-  white: "#fff",
+  white: "#fafafa",
   black: "#000",
 };
 
