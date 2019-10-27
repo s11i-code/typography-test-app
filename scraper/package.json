@@ -5,8 +5,8 @@
   "main": "scrapeSites.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "scrape": "node scrapeSites.js & aws s3 sync ./tmp/ s3://typography-test-app-scraped-data  --profile satu-personal-cli --acl public-read"
-},
+    "scrape": "node scrapeSites.js && aws s3 sync ./tmp/ s3://typography-test-app-scraped-data  --profile satu-personal-cli --acl public-read"
+  },
   "author": "",
   "license": "ISC",
   "devDependencies": {
