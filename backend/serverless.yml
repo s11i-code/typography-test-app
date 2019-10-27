@@ -10,11 +10,30 @@ provider:
   runtime: nodejs10.x
   profile: satu-personal-cli
   region: eu-central-1
+  environment:
+    S3_DATA_BUCKET: "${self:custom.s3-data-bucket-name}"
+
+custom:
+  s3-data-bucket-name: "typography-test-app-scraped-data"
+
+iamRoleStatements:
+- Effect: "Allow"
+  Action:
+    - "s3:ListBucket"
+    - "s3:GetObject"
+    - "s3:PutObject"
+  Resource: "arn:aws:s3:::${self:custom.s3-data-bucket}/*"
 
 functions:
-  hello:
-    handler: handler.hello
+  sites:
+    handler: handlers/sites.getSites
     events:
       - http:
           method: get
-          path: hello
+          path: sites
+
+Resources:
+  S3OperationsBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: ${self:custom.s3-data-bucket}
