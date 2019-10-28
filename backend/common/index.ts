@@ -2,7 +2,12 @@ import sanitizeFilename from 'sanitize-filename';
 
 import { Resolution } from "./types";
 
-export const sites = ["https://github.com/satueveliina", "https://www.smartly.io/", "https://yle.fi/"];
+export const sites = [
+    "https://github.com/satueveliina",
+    "https://www.smartly.io/",
+    "https://yle.fi/",
+    "https://medium.com/",
+];
 export const resolutions: Resolution[] = [{width: 960, height: 800}, {width: 768, height: 1024}, {width: 375, height: 667}];
 
 export function getS3FolderPath(site: string, resolution: Resolution): string {
