@@ -5,7 +5,6 @@ import ImageMapper from "react-image-mapper";
 // @ts-ignore
 import {resolutions } from "../../../../backend/common";
 import { Sitedata } from "../../../../backend/common/types";
-import Container from "../../components/Container";
 import Page from "../../components/Page";
 import SiteImageMap from "../../components/SiteImageMap";
 
@@ -18,7 +17,7 @@ export default function EvaluatorPage() {
   useEffect(() => {
     const fetchData = async () => {
       const result = await API.get("sites", "/sites", {});
-      const data = result.data[1];
+      const data = result.data[0];
       setSitedata(data);
     };
     fetchData();
@@ -27,9 +26,7 @@ export default function EvaluatorPage() {
   return (
     <IndexLayout>
       <Page>
-        <Container>
-          { Object.keys(sitedata).length > 1 && <SiteImageMap sitedata={sitedata}/>}
-        </Container>
+        { Object.keys(sitedata).length > 1 && <SiteImageMap sitedata={sitedata}/>}
       </Page>
     </IndexLayout>
   );

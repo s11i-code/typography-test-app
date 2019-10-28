@@ -4,7 +4,7 @@
 export const colors = {
   accent: "#ffb238",
   brand: "rgb(74, 105, 189)",
-  lilac: "#9d7cbf",
+  electricViolet: "#6610F2",
   success: "#37b635",
   warning: "#ec1818",
   ui: {
@@ -49,10 +49,10 @@ export const dimensions = {
     large: 18,
   },
   headingSizes: {
-    h1: 2.441,
-    h2: 1.953,
-    h3: 1.563,
-    h4: 1.25,
+    h1: 160,
+    h2: 140,
+    h3: 130,
+    h4: 110,
   },
   lineHeight: {
     regular: 1.45,
