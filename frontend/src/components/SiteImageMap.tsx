@@ -1,17 +1,12 @@
 import React, { useState } from "react";
 // @ts-ignore
 import ImageMapper from "react-image-mapper";
-
-// @ts-ignore
-import {resolutions } from "../../../../backend/common";
 import { Element, Sitedata } from "../../../backend/common/types";
 
 function computeCoords(rect: any) {
   // define top left corner and bottom right corner:
   return [ rect.left, rect.top, rect.left + rect.width, rect.top + rect.height];
 }
-// tslint:disable-next-line: max-line-length
-const getWindowWidth = (): number => window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
 
 // TODO: add type definition
 function isVisible(element: any): boolean {
@@ -28,11 +23,12 @@ interface Props {
   onClick: (elem: Element) => void;
   selectedElementIDs: string[];
   maxSelectableElements?: number;
+  width: number;
 }
 
 export default function SiteImageMap(props: Props) {
 
-  const { sitedata, selectedElementIDs, maxSelectableElements = 5 } = props;
+  const { sitedata, selectedElementIDs, maxSelectableElements = 5, width } = props;
   const { imagePath, elements } = sitedata;
   const [hoveredArea, setHoveredArea] = useState<Element|undefined>(undefined);
 
@@ -68,7 +64,7 @@ export default function SiteImageMap(props: Props) {
               src={`${BUCKET_URL}${imagePath}`}
               map={imageMap}
               imgWidth={props.sitedata.resolution.width}
-              width={getWindowWidth()}
+              width={width}
               onClick= {props.onClick}
               onMouseEnter={(area: Element) => setHoveredArea(area)}
               onMouseLeave={() => setHoveredArea(undefined)}

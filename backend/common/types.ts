@@ -24,6 +24,10 @@ export interface Element {
     rect: Rect,
 }
 
+export interface GetSiteRequestParams {
+    resolutionIdx: number;
+}
+
 export interface EvaluateSiteRequestParams {
     siteID: string;
     resolution: Resolution;

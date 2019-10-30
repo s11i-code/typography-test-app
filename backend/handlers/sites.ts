@@ -2,12 +2,13 @@ import { APIGatewayProxyHandler } from 'aws-lambda';
 import 'source-map-support/register';
 import S3 from 'aws-sdk/clients/s3';
 import DynamoDB from 'aws-sdk/clients/dynamodb';
-import {sites, resolutions, getS3FolderPath} from '../common/index';
+import { sites, resolutions, getS3FolderPath } from '../common/index';
+import { Resolution, GetSiteRequestParams } from '../common/types';
+
 import uuid from 'uuid';
 
 const dynamoDb = new DynamoDB.DocumentClient();
 const s3 = new S3();
-const resolution = resolutions[2];
 
 //TODO only allow requests from the frontend
 const headers = {
@@ -15,7 +16,7 @@ const headers = {
   'Access-Control-Allow-Credentials': true,
 };
 
-const getSitedata = (site:string) => {
+const getSitedata = (site:string, resolution: Resolution) => {
   const params = {
     Bucket: process.env['S3_DATA_BUCKET'],
     Key: `${getS3FolderPath(site, resolution)}/data.json`,
@@ -23,10 +24,13 @@ const getSitedata = (site:string) => {
   return s3.getObject(params).promise();
 }
 
-export const getSites: APIGatewayProxyHandler = async (_context) => {
+export const getSites: APIGatewayProxyHandler = async (event, _context) => {
 
   try {
-    const responses = await(Promise.all(sites.map((site:string) => getSitedata(site))));
+    const params: GetSiteRequestParams = event.queryStringParameters as unknown as GetSiteRequestParams;
+    const resolution = resolutions[Number(params.resolutionIdx)];
+    const responses = await(Promise.all(sites.map((site:string) => getSitedata(site, resolution))));
+
     const sitesdata = responses.map(res => JSON.parse(res.Body.toString('utf-8')));
     return {
       headers,

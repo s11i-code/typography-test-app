@@ -5,9 +5,8 @@ import { API } from "aws-amplify";
 import React, {useEffect, useState} from "react";
 // @ts-ignore
 import ImageMapper from "react-image-mapper";
-// @ts-ignore
 import { resolutions } from "../../../../backend/common";
-import { Element, EvaluateSiteRequestParams, Sitedata } from "../../../../backend/common/types";
+import { Element, EvaluateSiteRequestParams, GetSiteRequestParams, Sitedata } from "../../../../backend/common/types";
 import Page from "../../components/Page";
 import SiteImageMap from "../../components/SiteImageMap";
 import { maxSelectableElements } from "../../config";
@@ -20,9 +19,15 @@ export default function EvaluatorPage() {
   const [selectedElementIDs, setSelectedElementIDs] = useState<string[]>([]);
   const [saving, setSaving] = useState(false);
 
+  const windowWidth =  getWindowWidth();
+
   useEffect(() => {
     const fetchData = async () => {
-      const result = await API.get("backend", "/sites", {});
+      const resolutionIdx = selectEvaluatedResolution(windowWidth);
+      const params: GetSiteRequestParams = {resolutionIdx};
+      const result = await API.get("backend", "/sites", {
+        queryStringParameters: params,
+      });
       const data = result.data[0];
       setSitedata(data);
     };
@@ -65,8 +70,20 @@ export default function EvaluatorPage() {
             selectedElementIDs={selectedElementIDs}
             sitedata={sitedata}
             maxSelectableElements={maxSelectableElements}
+            width={ windowWidth }
           />)}
       </Page>
     </IndexLayout>
   );
+}
+
+// tslint:disable-next-line: max-line-length
+const getWindowWidth = (): number => window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+
+function selectEvaluatedResolution(windowWidth: number): number {
+  // select the closest resolution which is bigger than window width
+  const diffs = resolutions.map(({width}) => width - windowWidth);
+  return diffs.reduce((bestIdx, curr, currIdx) => {
+     return diffs[currIdx] >= 0  && diffs[currIdx] < diffs[bestIdx] ? currIdx : bestIdx;
+  }, 0);
 }

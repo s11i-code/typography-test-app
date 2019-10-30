@@ -18,7 +18,6 @@ export function getS3FolderPath(site: string, resolution: Resolution): string {
     if(site) {
         const cleanedSite = site.replace("http://", "").replace("https://", "");
         path =`${path}/${sanitizeFilename(cleanedSite)}`;
-
     }
     return path;
 }
