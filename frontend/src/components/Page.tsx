@@ -1,9 +1,7 @@
 import styled from "@emotion/styled";
 import Amplify from "aws-amplify";
 import * as React from "react";
-
 import config from "../config";
-import { dimensions } from "../styles/variables";
 
 const StyledPage = styled.div`
   display: block;
@@ -17,7 +15,7 @@ Amplify.configure({
     endpoints: [
       {
         endpoint: config.apiGateway.URL,
-        name: "sites",
+        name: "backend",
         region: config.apiGateway.REGION,
       },
     ],

@@ -1,13 +1,17 @@
+import React, { useState } from "react";
 // @ts-ignore
 import ImageMapper from "react-image-mapper";
+
 // @ts-ignore
 import {resolutions } from "../../../../backend/common";
-import { Sitedata } from "../../../backend/common/types";
+import { Element, Sitedata } from "../../../backend/common/types";
 
 function computeCoords(rect: any) {
   // define top left corner and bottom right corner:
   return [ rect.left, rect.top, rect.left + rect.width, rect.top + rect.height];
 }
+// tslint:disable-next-line: max-line-length
+const getWindowWidth = (): number => window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
 
 // TODO: add type definition
 function isVisible(element: any): boolean {
@@ -21,16 +25,23 @@ const BUCKET_URL = "https://typography-test-app-scraped-data.s3.eu-central-1.ama
 
 interface Props {
   sitedata: Sitedata;
+  onClick: (elem: Element) => void;
+  selectedElementIDs: string[];
+  maxSelectableElements?: number;
 }
+
 export default function SiteImageMap(props: Props) {
 
-  const { imagePath, elements } = props.sitedata;
+  const { sitedata, selectedElementIDs, maxSelectableElements = 5 } = props;
+  const { imagePath, elements } = sitedata;
+  const [hoveredArea, setHoveredArea] = useState<Element|undefined>(undefined);
 
   const imageMap = elements ? {
     areas: elements
-      .filter((elem: any) => isVisible(elem))
-      .map((elem: any, index: number) => ({
+      .filter((elem: Element) => isVisible(elem))
+      .map((elem: Element, index: number) => ({
         coords: computeCoords(elem.rect),
+        id: elem.id,
         name: `element-${index}`,
         shape: "rect",
         text: elem.text,
@@ -38,13 +49,35 @@ export default function SiteImageMap(props: Props) {
     name: "image-map",
   } : {};
 
+  function getTipPosition(area: any) {
+    return { top: `${area.center[1]}px`, left: `${area.center[0]}px` };
+  }
+  function getTipText(area: Element): string {
+    if (selectedElementIDs.includes(area.id)) {
+      return "selected";
+    } else if (maxSelectableElements <= selectedElementIDs.length) {
+      return "maximum number reached";
+    }
+    return `${selectedElementIDs.length + 1}`;
+  }
+
   return (
-    imagePath ?
+    <div>
+      {imagePath ?
             <ImageMapper
               src={`${BUCKET_URL}${imagePath}`}
-              map={imageMap} width={props.sitedata.resolution.width}
-            /> : null
+              map={imageMap}
+              imgWidth={props.sitedata.resolution.width}
+              width={getWindowWidth()}
+              onClick= {props.onClick}
+              onMouseEnter={(area: Element) => setHoveredArea(area)}
+              onMouseLeave={() => setHoveredArea(undefined)}
+            /> : null}
+        {hoveredArea &&
+          <span className="tooltip"
+            style={getTipPosition(hoveredArea) }>
+              {getTipText(hoveredArea)}
+          </span>}
+    </div>
   );
 }
-
-// https://typography-test-app-scraped-data.s3.eu-central-1.amazonaws.com//github.comsatueveliina/960x800/image.jpg
