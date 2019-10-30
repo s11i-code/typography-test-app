@@ -16,6 +16,7 @@
     "@types/puppeteer": "^1.20.2",
     "get-contrast": "^2.0.0",
     "puppeteer": "^1.20.0",
+    "shortid": "^2.2.15",
     "typescript": "^3.6.4"
   },
   "dependencies": {

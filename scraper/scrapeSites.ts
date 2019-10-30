@@ -1,12 +1,13 @@
 import contrast from "get-contrast";
 import fs from "fs";
-import puppeteer from "puppeteer";
+import shortid from "shortid";
+import puppeteer, { Page } from "puppeteer";
 import { sites, resolutions, getS3FolderPath } from '../backend/common';
-import { Resolution } from "../backend/common/types";
+import { Resolution, Element } from "../backend/common/types";
 
-const typographicElements = ["h1", "h2", "h3", "h4", "h5", "h6", "p", "a", "button"];
+const typographicElements = ["h1", "h2", "h3", "h4", "h5", "h6", "p", "a", "button", "label"];
 
-function isInViewport(bounding, resolution: Resolution) {
+function isInViewport(bounding: ClientRect, resolution: Resolution) {
     return (
         bounding.top >= 0 &&
         bounding.left >= 0 &&
@@ -59,12 +60,11 @@ async function scrapeSites() {
 scrapeSites();
 
 async function scrapeSite(site:string, browser: any) {
-    const page = await browser.newPage();
+    const page: Page = await browser.newPage();
     await page.exposeFunction("log", console.log);
 
-
     // use reduce here to execute loop sequentially
-    return resolutions.reduce( async (previousPromise, resolution) => {
+    return resolutions.reduce( async (previousPromise: Promise<any>, resolution:Resolution) => {
         await previousPromise;
         await page.goto(site, {waitUntil: "networkidle2"});
         await page.setViewport({
@@ -74,21 +74,23 @@ async function scrapeSite(site:string, browser: any) {
         const path = `${getS3FolderPath(site, resolution)}`
         const imagePath = `${path}/image.jpg`;
         //@ts-ignore
-        await processDOMElements(typographicElements, path, imagePath, resolution);
+        await processSite(site, typographicElements, path, imagePath, resolution);
         return await page.screenshot({ path: `tmp/${imagePath}`, quality: 100});
       }, Promise.resolve());
 
-    async function processDOMElements(selector:string, path:string, imagePath:string, resolution:Resolution) {
-        const rawElements = await page.evaluate(selector => {
+    async function processSite(siteID:string, selector: string, path: string, imagePath: string, resolution: Resolution): Promise<any> {
+        const rawElements = await page.evaluate((selector: string)=> {
             const elements = document.querySelectorAll(selector);
 
             const parsed = Array.from(elements).map(element => {
-                const rect = element.getBoundingClientRect()
+                const rect = element.getBoundingClientRect();
                 const styles = window.getComputedStyle(element);
                 const text = element.textContent.trim();
                 const tagName = element.tagName;
+
                 const { fontWeight, fontSize, color, backgroundColor, display, visibility } = styles;
-                const {x, y, width, height, top, bottom, right, left} = rect;
+                //@ts-ignore
+                const { width, height, top, bottom, right, left, x, y} = rect;
                 return   {
                     text,
                     tagName,
@@ -109,15 +111,15 @@ async function scrapeSite(site:string, browser: any) {
 
         }, selector);
 
-        const elements = rawElements.map((elem) => {
+        const elements: Element[] = rawElements.map((elem) => {
             return {
                 ...elem,
+                id: shortid.generate(),
                 isInViewport: isInViewport(elem.rect, resolution),
                 constrast: getContrast(elem.styles.color, elem.styles.backgroundColor),
             }
         })
-        await writeJSON(path, {imagePath, resolution, elements});
-
+        await writeJSON(path, {siteID, imagePath, resolution, elements});
     }
 }
 
