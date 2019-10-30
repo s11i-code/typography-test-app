@@ -10,8 +10,17 @@ provider:
   runtime: nodejs10.x
   profile: satu-personal-cli
   region: eu-central-1
+  stage: dev
   environment:
     S3_DATA_BUCKET: "${self:custom.s3-data-bucket-name}"
+    RANKED_ELEMENTS_TABLE: "${self:service}-${self:provider.stage}-site-element-rankings"
+
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:GetItem
+        - dynamodb:UpdateItem
+      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.RANKED_ELEMENTS_TABLE}"
 
 custom:
   s3-data-bucket-name: "typography-test-app-scraped-data"
@@ -25,15 +34,36 @@ iamRoleStatements:
   Resource: "arn:aws:s3:::${self:custom.s3-data-bucket}/*"
 
 functions:
-  sites:
+  evaluate-site:
+    handler: handlers/sites.evaluate
+    events:
+      - http:
+          method: post
+          path: site/evaluate
+  get-sites:
     handler: handlers/sites.getSites
     events:
       - http:
           method: get
           path: sites
+resources:
+  Resources:
+    RankedElementsTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:provider.environment.RANKED_ELEMENTS_TABLE}
 
-Resources:
-  S3OperationsBucket:
-    Type: AWS::S3::Bucket
-    Properties:
-      BucketName: ${self:custom.s3-data-bucket}
+  # Resources:
+  #   S3OperationsBucket:
+  #     Type: AWS::S3::Bucket
+  #     Properties:
+  #       BucketName: ${self:custom.s3-data-bucket}
