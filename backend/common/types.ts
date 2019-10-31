@@ -5,9 +5,9 @@ export type Resolution = {
 
 export interface Sitedata {
     siteID: string,
-    imagePath?: string;
-    resolution?: Resolution;
-    elements?: Element[];
+    imagePath: string;
+    resolution: Resolution;
+    elements: Element[];
 }
 
 type Rect = {
