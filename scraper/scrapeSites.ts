@@ -5,7 +5,7 @@ import puppeteer, { Page } from "puppeteer";
 import { sites, resolutions, getS3FolderPath } from '../backend/common';
 import { Resolution, Element } from "../backend/common/types";
 
-const typographicElements = ["h1", "h2", "h3", "h4", "h5", "h6", "p", "a", "button", "label"];
+const typographicElements = ["h1", "h2", "h3", "h4", "h5", "h6", "p", "a", "button", "label", "summary"];
 
 function isInViewport(bounding: ClientRect, resolution: Resolution) {
     return (
