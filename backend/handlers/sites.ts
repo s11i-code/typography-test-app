@@ -28,6 +28,16 @@ export const getSites: APIGatewayProxyHandler = async (event, _context) => {
 
   try {
     const params: GetSiteRequestParams = event.queryStringParameters as unknown as GetSiteRequestParams;
+    if(!params || !params.resolutionIdx) {
+      return {
+        headers,
+        statusCode: 400,
+        body: JSON.stringify({
+          msg: "Please specify resolution.",
+        }, null, 2),
+      };
+    }
+
     const resolution = resolutions[Number(params.resolutionIdx)];
     const responses = await(Promise.all(sites.map((site:string) => getSitedata(site, resolution))));
 
