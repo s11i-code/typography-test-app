@@ -1,6 +1,8 @@
+import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
+
 import { navigate } from "@reach/router";
 import { API } from "aws-amplify";
 import React, {useEffect, useState} from "react";
@@ -9,6 +11,8 @@ import ImageMapper from "react-image-mapper";
 import { resolutions, sites } from "../../../../backend/common";
 import { Element, EvaluateSiteRequestParams, GetSiteRequestParams, Sitedata } from "../../../../backend/common/types";
 import Page from "../../components/Page";
+import Spinner from "../../components/Spinner";
+
 import SiteImageMap from "../../components/SiteImageMap";
 import { maxSelectableElements } from "../../config";
 import IndexLayout from "../../layouts";
@@ -20,23 +24,25 @@ export default function EvaluatorPage() {
   const [selectedElementIDs, setSelectedElementIDs] = useState<string[]>([]);
   const [siteIdx, setSiteIdx] = useState(0);
 
-  const [saving, setSaving] = useState(false);
+  const [loading, setLoading] = useState(false);
   const windowWidth =  getWindowWidth();
   const sitedata: Sitedata = sitesdata[siteIdx];
 
   async function fetchData() {
     const resolutionIdx = selectEvaluatedResolution(windowWidth);
-    const params: GetSiteRequestParams = {resolutionIdx};
-    const result = await API.get("backend", "/sites", {
-      queryStringParameters: params,
-    });
+    const queryStringParameters: GetSiteRequestParams = {resolutionIdx};
+    setLoading(true);
+
+    const result = await API.get("backend", "/sites", { queryStringParameters });
+    setLoading(false);
+
     setSitesdata(result.data);
   }
 
-  function setSelectedElementIds(elem: Element): void {
-    const alreadySelected = selectedElementIDs.includes(elem.id);
+  function setSelectedElementIds(elemId: string): void {
+    const alreadySelected = selectedElementIDs.includes(elemId);
     const maxSelected = selectedElementIDs.length > maxSelectableElements;
-    const newSelectedItems = [...selectedElementIDs, elem.id];
+    const newSelectedItems = [...selectedElementIDs, elemId];
 
     if (alreadySelected) { return; }
     setSelectedElementIDs(newSelectedItems);
@@ -48,8 +54,8 @@ export default function EvaluatorPage() {
       selectedElementIDs: newSelectedItems,
       siteID: sitedata.siteID,
     };
-    setSaving(true);
-    API.post("backend", "/site/evaluate", {body: data}).then(() => setSaving(false));
+    setLoading(true);
+    API.post("backend", "/site/evaluate", {body: data}).then(() => setLoading(false));
   }
 
   useEffect(() => {
@@ -69,29 +75,31 @@ export default function EvaluatorPage() {
     }
   }
 
-  if (!sitedata) {
-    return null;
-  }
   return (
     <IndexLayout>
-        <Dialog open={selectedElementIDs.length >= maxSelectableElements}>
-          <DialogContent>
-          <p>Thank you for the reply! It has been saved. </p>
-          </DialogContent>
-          <DialogActions>
-             <button onClick={handleNextButtonClick} className="button">Next page</button>
-          </DialogActions>
-        </Dialog>
-      <Page>
-        { Object.keys(sitedata).length > 1 && (
-          <SiteImageMap
-            onClick={setSelectedElementIds}
-            selectedElementIDs={selectedElementIDs}
-            sitedata={sitedata}
-            maxSelectableElements={maxSelectableElements}
-            width={ windowWidth }
-          />)}
-      </Page>
+      { loading && <Spinner  />}
+      { sitedata &&
+        (<>
+          <Dialog open={selectedElementIDs.length >= maxSelectableElements}>
+            <DialogContent>
+              <p>Thanks, your reply has been saved. </p>
+            </DialogContent>
+            <DialogActions>
+              <button onClick={handleNextButtonClick} className="button small">Give me more</button>
+            </DialogActions>
+          </Dialog>
+          <Page>
+            { Object.keys(sitedata).length > 1 && (
+              <SiteImageMap
+                onClick={setSelectedElementIds}
+                selectedElementIDs={selectedElementIDs}
+                sitedata={sitedata}
+                maxSelectableElements={maxSelectableElements}
+                width={ windowWidth }
+              />)}
+          </Page>
+        </>)
+        }
     </IndexLayout>
   );
 }

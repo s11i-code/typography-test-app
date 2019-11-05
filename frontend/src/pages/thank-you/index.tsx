@@ -11,8 +11,7 @@ const IndexPage = () => (
         <main>
           <section>
           <h1>That was all!</h1>
-          <p>Thank you so much. You're the best!
-            <br/>
+          <p>Thank you so much.
             <br/>
             -Satu
           </p>

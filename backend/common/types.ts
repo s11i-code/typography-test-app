@@ -15,6 +15,8 @@ type Rect = {
     bottom: number,
     left: number,
     right: number,
+    height: number,
+    width: number,
 }
 
 export interface Element {

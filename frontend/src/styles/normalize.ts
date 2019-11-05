@@ -18,16 +18,19 @@ export default `
   }
 
   body {
+    color: ${colors.gray.dark};
     width: 100%;
     overflow-x: hidden;
     overflow-y: scroll;
-    font-family: ${fonts.sansSerif};
-    color: ${colors.black};
-    background-color: ${colors.white};
+    background-color: ${colors.gray.light};
     -webkit-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%;
   }
 
+  p {
+    font-family: ${fonts.body};
+
+  }
   a {
     color: ${colors.brand};
     text-decoration: none;
@@ -84,20 +87,22 @@ export default `
   }
 
   h1, h2, h3, h4, h5, h6 {
-    margin-top: 3%;
-    margin-bottom: 5%;
-    color: ${colors.gray.dark};
-    font-weight: 600;
+
+    font-family: ${fonts.heading};
+    font-weight: 500;
     line-height: ${dimensions.lineHeight.heading};
     text-rendering: optimizeLegibility;
+    color: ${colors.gray.dark};
   }
 
   h1 {
-    font-size: ${dimensions.headingSizes.h1}%;
+    font-size: ${dimensions.headingSizes.h1}%
   }
 
   h2 {
     font-size: ${dimensions.headingSizes.h2}%;
+    margin-top: 4%;
+    margin-bottom: 2%
   }
 
   h3 {
@@ -110,7 +115,8 @@ export default `
 
   p {
     margin-top: 0;
-    margin-bottom: 1rem;
+
+    margin-bottom: 1%;
   }
 
   strong {

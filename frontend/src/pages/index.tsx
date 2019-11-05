@@ -3,6 +3,7 @@ import * as React from "react";
 
 import Container from "../components/Container";
 import Page from "../components/Page";
+import { maxSelectableElements } from "../config";
 import IndexLayout from "../layouts";
 
 const IndexPage = () => (
@@ -10,34 +11,36 @@ const IndexPage = () => (
     <Page>
       <Container>
         <main>
-          <h1>Welcome to the website typography evaluator!</h1>
+          <section>
+            <h1>Data science project needs data</h1>
+            <section><h2>How can I help?</h2>
+            <p>That's easy! You will be shown a bunch of images of real websites
+              and you just click (or tap) on text elements in the order as you read them.
+             You can select {maxSelectableElements} elements. The first one will be a demo site.
+            </p>
 
-          <p>I built this site to collect data for research project
-            for a seminar in the University of Helsinki. </p>
+            <p>NOTE: The system is not perfect, and it may not recognize all
+            elements as text (mainly images).
+            If the thing you you perceive is not clickable,
+            you can ignore it and move on to the next one. <br/>
+            </p>
+            </section>
+            <section><h2>What is it for?</h2>
 
-          <p>In this project I aim to study <b>the order </b>
-          in which the human brain perceives different parts of a website.</p>
-
-          <p>After you click on the Start button below, you will be shown pictures of
-            various websites. You can select a <b>maximum of five elements</b>
-            on the site by clicking on them. The order in which you click will
-            be interpreted as the order in which you perceive the item, so should
-            <b>click first you read first, second thing you read second </b> etc.
-          </p>
-
-          <p><b>NOTE</b>: The system is not perfect, and it may not recognize all
-          elements as text (mainly images).
-          If the thing you you perceive is not clickable,
-          you can ignore it and move on to the next one. <br/>
-          </p>
-
-          <p>
-            <b> Thanks, your help is very valuable and much appreciated!</b>
-            <br/> <br/>
-            -Satu
-          </p>
-
-          <Link className="button" to="/evaluator/">Start</Link>
+            <p>I built this site to collect data for research project
+              for a <a href="https://courses.helsinki.fi/fi/csm14210"> course in the University of Helsinki</a>. In my
+              project, I try to build a model for the order in which we observe text based on its
+               characteristic, such as size, thickness, color, position etc.</p>
+            <p>
+               Thank you in advance! Your help is much appreciated.
+              <br/> <br/>
+               -Satu
+            </p>
+            </section>
+            <div className="button-container">
+              <Link className="button" to="/evaluator/">Start evaluating</Link>
+            </div>
+          </section>
         </main>
       </Container>
     </Page>

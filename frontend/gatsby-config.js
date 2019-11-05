@@ -51,5 +51,15 @@ module.exports = {
     "gatsby-plugin-sharp",
     "gatsby-transformer-sharp",
     "gatsby-plugin-react-helmet",
+    {
+      resolve: `gatsby-plugin-google-fonts`,
+      options: {
+        fonts: [
+          `Noto Sans SC\:700`,
+          `Noto Serif SC`,
+        ],
+        display: "block",
+      },
+    },
   ],
 };

@@ -1,16 +1,17 @@
 import styled from "@emotion/styled";
 import * as React from "react";
 
-import { getEmSize } from "../styles/mixins";
-import { widths } from "../styles/variables";
-
 const StyledContainer = styled.div`
+  background-color: white;
   position: relative;
-  margin-left: auto;
-  margin-right: auto;
   width: auto;
   max-width: 700px;
-  padding: 1em;
+  padding: 6% 8% 10% 8%;
+  margin: 2% auto;
+`;
+
+const OuterContainer = styled.div`
+  margin: 0 2% ;
 `;
 
 interface ContainerProps {
@@ -18,9 +19,11 @@ interface ContainerProps {
 }
 
 const Container: React.FC<ContainerProps> = ({ children, className }) =>
-  <StyledContainer
+  <OuterContainer>
+    <StyledContainer
     className={className}>
       {children}
-  </StyledContainer>;
+    </StyledContainer>
+  </OuterContainer>;
 
 export default Container;

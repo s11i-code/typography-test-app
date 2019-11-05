@@ -1,12 +1,30 @@
+import styled from "@emotion/styled";
+import { grey } from "@material-ui/core/colors";
 import React, { useState } from "react";
 // @ts-ignore
 import ImageMapper from "react-image-mapper";
 import { Element, Sitedata } from "../../../backend/common/types";
 
-function computeCoords(rect: any) {
-  // define top left corner and bottom right corner:
-  return [ rect.left, rect.top, rect.left + rect.width, rect.top + rect.height];
-}
+const BUCKET_URL = "https://typography-test-app-scraped-data.s3.eu-central-1.amazonaws.com/";
+
+const Container = styled.div`
+  position: relative;
+  display: inline-block; /* <= shrinks container to image size */
+  transition: transform 150ms ease-in-out;
+`;
+
+const Svg = styled.svg`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+`;
+
+const Img = styled.img`
+  display: block;
+  min-width: 100%;
+  height: auto;
+`;
 
 // TODO: add type definition
 function isVisible(element: any): boolean {
@@ -16,11 +34,10 @@ function isVisible(element: any): boolean {
     && element.text !== ""
     && (element.rect.width !== 0 && element.rect.height !== 0);
 }
-const BUCKET_URL = "https://typography-test-app-scraped-data.s3.eu-central-1.amazonaws.com/";
 
 interface Props {
   sitedata: Sitedata;
-  onClick: (elem: Element) => void;
+  onClick: (id: string) => void;
   selectedElementIDs: string[];
   maxSelectableElements?: number;
   width: number;
@@ -28,26 +45,10 @@ interface Props {
 
 export default function SiteImageMap(props: Props) {
 
-  const { sitedata, selectedElementIDs, maxSelectableElements = 5, width } = props;
-  const { imagePath, elements } = sitedata;
-  const [hoveredArea, setHoveredArea] = useState<Element|undefined>(undefined);
+  const { sitedata, selectedElementIDs, maxSelectableElements = 5, width, onClick} = props;
+  const { imagePath, elements, resolution } = sitedata;
+  const [hoveredArea, setHoveredArea] = useState<string|undefined>(undefined);
 
-  const imageMap = elements ? {
-    areas: elements
-      .filter((elem: Element) => isVisible(elem))
-      .map((elem: Element, index: number) => ({
-        coords: computeCoords(elem.rect),
-        id: elem.id,
-        name: `element-${index}`,
-        shape: "rect",
-        text: elem.text,
-    })),
-    name: "image-map",
-  } : {};
-
-  function getTipPosition(area: any) {
-    return { top: `${area.center[1]}px`, left: `${area.center[0]}px` };
-  }
   function getTipText(area: Element): string {
     if (selectedElementIDs.includes(area.id)) {
       return "selected";
@@ -57,23 +58,51 @@ export default function SiteImageMap(props: Props) {
     return `${selectedElementIDs.length + 1}`;
   }
 
+  const visibleElements = elements.filter((elem: Element) => isVisible(elem));
   return (
     <div>
-      {imagePath ?
-            <ImageMapper
-              src={`${BUCKET_URL}${imagePath}`}
-              map={imageMap}
-              imgWidth={props.sitedata.resolution.width}
-              width={width}
-              onClick= {props.onClick}
-              onMouseEnter={(area: Element) => setHoveredArea(area)}
-              onMouseLeave={() => setHoveredArea(undefined)}
-            /> : null}
-        {hoveredArea &&
-          <span className="tooltip"
-            style={getTipPosition(hoveredArea) }>
-              {getTipText(hoveredArea)}
-          </span>}
+      {imagePath &&
+        (<>
+          <Img src={ `${BUCKET_URL}${imagePath}`}/>
+          <Svg width={width} viewBox={`0 0 ${resolution.width} ${resolution.height}`}>
+
+            {visibleElements
+              .map(({rect, id}) => {
+                const bordered = hoveredArea === id || selectedElementIDs.includes(id);
+                return (<rect
+                  key={id}
+                  fillOpacity={selectedElementIDs.includes(id) ? "0.4"   : "0"}
+                  y={rect.top}
+                  x={rect.left}
+                  onClick={() => onClick(id)}
+                  height={rect.height}
+                  width={rect.width}
+                  style={{cursor: "pointer"}}
+                  stroke={bordered ? "grey" : undefined}
+                  onMouseEnter={() => setHoveredArea(id)}
+                  onMouseLeave={() => setHoveredArea(undefined)}
+            />);
+          })}
+
+        {selectedElementIDs
+              .map((id, idx) => {
+                const elem = visibleElements.find((el) => el.id  === id) as Element;
+                const x = elem.rect.left +  elem.rect.width - 20;
+                const y = elem.rect.top + 2;
+                return (
+                  <g
+                    key={`tooltip-${elem.id}`}
+                    className="tooltip"
+                  >
+                    <rect x={x} y={y}/>
+                    <text y={y} x={x + 5} >{idx + 1}</text>
+                  </g>);
+
+              })
+            }
+          </Svg>
+        </>)
+        }
     </div>
-  );
+ );
 }

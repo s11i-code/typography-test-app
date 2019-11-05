@@ -14,15 +14,18 @@ export const colors = {
   },
   code: "#fcf6f0",
   gray: {
+    light: "#e9eaed",
     calm: "rgba(0, 0, 0, 0.54)",
     copy: "hsla(270, 15.797828016000002%, 0%, 0.88)",
-    dark: "hsla(270, 17.119554496%, 0%, 0.92)",
+    dark: "#394b59",
   },
   white: "#fafafa",
   black: "#000",
 };
 
 export const fonts = {
+  heading: "Noto Sans SC",
+  body: "Noto Serif SC",
   sansSerif:
     '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif',
   serif: 'Georgia, "Times New Roman", Times, serif',
@@ -50,7 +53,7 @@ export const dimensions = {
   },
   headingSizes: {
     h1: 160,
-    h2: 140,
+    h2: 120,
     h3: 130,
     h4: 110,
   },

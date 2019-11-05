@@ -1,26 +1,47 @@
-import { colors } from "./variables";
+import { colors, fonts } from "./variables";
 
 export default `
+  .button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+  }
+
   .button {
     border-radius: 0;
     background: ${colors.electricViolet};
     box-shadow: none;
     color: #fff;
-    min-width: 40px;
-    min-height: 40px;
-    padding: 5px 15px;
+    padding: 0.5rem 1.5rem;
     font-size: 1rem;
+
+  }
+
+  .MuiDialogContent-root {
+    margin: 4% 3%;
+  }
+
+  .MuiDialogActions-root {
+    background-color: lavender;
+  }
+
+  .button.small {
+    padding: 0.25rem 0.5rem;
   }
 
   .tooltip {
-    position: absolute;
-    font-size: 80%;
-    color: #fff;
-    padding: 2px 4px;
-    background: rgba(0,0,0,0.8);
-    transform: translate3d(-50%, -50%, 0);
-    border-radius: 5px;
     pointer-events: none;
     z-index: 1000;
+    rect {
+      rx: 6;
+      width: 20px;
+      height: 20px;
+      fill: rgba(0,0,0,0.6);
+    }
+
+    text {
+      fill: white;
+      dominant-baseline: text-before-edge;;
+    }
   }
 `;
