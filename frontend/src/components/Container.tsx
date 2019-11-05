@@ -6,8 +6,8 @@ const StyledContainer = styled.div`
   position: relative;
   width: auto;
   max-width: 700px;
-  padding: 6% 8% 10% 8%;
-  margin: 2% auto;
+  padding: 2.5rem;
+  margin: 1rem auto;
 `;
 
 const OuterContainer = styled.div`
