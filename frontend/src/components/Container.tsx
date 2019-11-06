@@ -1,17 +1,17 @@
 import styled from "@emotion/styled";
 import * as React from "react";
 
-const StyledContainer = styled.div`
+const InnerContainer = styled.div`
   background-color: white;
   position: relative;
   width: auto;
   max-width: 700px;
   padding: 2.5rem;
-  margin: 1rem auto;
+  margin: 0 auto;
 `;
 
 const OuterContainer = styled.div`
-  margin: 0 2% ;
+  margin: 2% 2% ;
 `;
 
 interface ContainerProps {
@@ -20,10 +20,10 @@ interface ContainerProps {
 
 const Container: React.FC<ContainerProps> = ({ children, className }) =>
   <OuterContainer>
-    <StyledContainer
+    <InnerContainer
     className={className}>
       {children}
-    </StyledContainer>
+    </InnerContainer>
   </OuterContainer>;
 
 export default Container;

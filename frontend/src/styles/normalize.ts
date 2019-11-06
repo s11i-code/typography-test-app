@@ -87,12 +87,12 @@ export default `
   }
 
   h1, h2, h3, h4, h5, h6 {
-
     font-family: ${fonts.heading};
     font-weight: 500;
     line-height: ${dimensions.lineHeight.heading};
     text-rendering: optimizeLegibility;
     color: ${colors.gray.dark};
+    margin: 0;
   }
 
   h1 {
@@ -101,8 +101,8 @@ export default `
 
   h2 {
     font-size: ${dimensions.headingSizes.h2}%;
-    margin-top: 4%;
-    margin-bottom: 2%
+    margin-top: 2rem;
+    margin-bottom: 1rem;
   }
 
   h3 {
@@ -115,8 +115,7 @@ export default `
 
   p {
     margin-top: 0;
-
-    margin-bottom: 1%;
+    margin-bottom: 1rem;
   }
 
   strong {

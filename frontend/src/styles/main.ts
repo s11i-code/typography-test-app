@@ -1,4 +1,4 @@
-import { colors, fonts } from "./variables";
+import { colors } from "./variables";
 
 export default `
   .button-container {
@@ -14,7 +14,6 @@ export default `
     color: #fff;
     padding: 0.5rem 1.5rem;
     font-size: 1rem;
-
   }
 
   .MuiDialogContent-root {
