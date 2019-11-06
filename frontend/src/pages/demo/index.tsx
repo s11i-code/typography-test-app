@@ -13,6 +13,7 @@ const IndexPage = () => (
           <section>
             <section>
               <h1 style={{marginBottom: "1rem"}}>Demo site</h1>
+
               <p>This is a demo site to show you the idea. </p>
               <p>
                 Click on the texts in the same order as you read them.
@@ -21,12 +22,15 @@ const IndexPage = () => (
               <p>
                 Once you have clicked on { maxSelectableElements} things, you will be able to continue.
                  Buttons can be clicked on too: <br/>
-                </p>
+              </p>
 
               <p style={{textAlign: "center"}}>
                 <button style={{marginTop: "1rem"}} className="small button">Try me</button>
               </p>
-              <p>NOTE: images can't be clicked on, even if they contain text:
+
+              <p>
+                NOTE: not all text element can be selected, even if they contain text (mainly images).
+                If the item is not clickable, you can just skip over to the next one you read.
               </p>
               <p  style={{textAlign: "center"}}> <img width="200px" src={"/demo-img.png"} alt="demo" /></p>
             </section>
