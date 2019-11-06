@@ -8,7 +8,15 @@ export const sites = [
     "https://yle.fi/",
     "https://medium.com/",
 ];
-export const resolutions: Resolution[] = [{width: 960, height: 800}, {width: 768, height: 1024}, {width: 375, height: 667}];
+export const resolutions: Resolution[] = [
+    {width: 300, height: 1200},
+    {width: 400, height: 1200},
+    {width: 500, height: 1200},
+    {width: 700, height: 1200},
+    {width: 800, height: 1200},
+    {width: 1000, height: 1200},
+    {width: 1500, height: 1200},
+];
 
 export function getS3FolderPath(site: string, resolution: Resolution): string {
     let path = "";
