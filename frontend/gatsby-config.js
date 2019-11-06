@@ -5,7 +5,7 @@ module.exports = {
   siteMetadata: {
     description: "",
     keywords: "",
-    title: "Typography weight test",
+    title: "Text evaluator",
   },
   plugins: [
     {
