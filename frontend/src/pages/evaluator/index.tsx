@@ -29,7 +29,8 @@ export default function EvaluatorPage() {
   const sitedata: Sitedata = sitesdata[siteIdx];
 
   async function fetchData() {
-    const resolutionIdx = selectEvaluatedResolution(windowWidth);
+    const resolutionIdx = selectEvaluatedResolutionIndex(windowWidth);
+    console.log("resolution", resolutions[resolutionIdx]);
     const queryStringParameters: GetSiteRequestParams = {resolutionIdx};
     setLoading(true);
 
@@ -104,10 +105,10 @@ export default function EvaluatorPage() {
   );
 }
 
-function selectEvaluatedResolution(windowWidth: number): number {
+function selectEvaluatedResolutionIndex(windowWidth: number): number {
   // select the closest resolution which is bigger than window width
   const diffs = resolutions.map(({width}) => width - windowWidth);
-  return diffs.reduce((bestIdx, curr, currIdx) => {
-     return diffs[currIdx] >= 0  && diffs[currIdx] < diffs[bestIdx] ? currIdx : bestIdx;
-  }, 0);
+  return diffs.reduce((bestIdx, diff, currIdx) => {
+    return diff >= 0  && diff < Math.abs(diffs[bestIdx]) ? currIdx : bestIdx;
+  }, diffs.length - 1 );
 }
