@@ -2,6 +2,7 @@
 import { Resolution } from "./types";
 
 export const sites = [
+    "https://master.d7s4am5xcgjzr.amplifyapp.com/demo",
     "https://github.com/satueveliina",
     "https://www.smartly.io/",
     "https://yle.fi/",
