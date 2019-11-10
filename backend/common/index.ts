@@ -6,7 +6,10 @@ export const sites = [
     "https://github.com/satueveliina",
     "https://www.smartly.io/",
     "https://yle.fi/",
-    "https://medium.com/",
+    "https://www.helsinki.fi/en",
+    "https://www.suomi24.fi/",
+    "https://mobile.twitter.com/",
+    "https://twitter.com/"
 ];
 export const resolutions: Resolution[] = [
     {width: 300, height: 1200},
