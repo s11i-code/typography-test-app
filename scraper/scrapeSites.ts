@@ -5,17 +5,6 @@ import puppeteer, { Page } from "puppeteer";
 import { sites, resolutions, getS3FolderPath } from '../backend/common';
 import { Resolution, Element } from "../backend/common/types";
 
-const typographicElements = ["h1", "h2", "h3", "h4", "h5", "h6", "p", "a", "button", "label", "summary"];
-
-function isInViewport(bounding: ClientRect, resolution: Resolution) {
-    return (
-        bounding.top >= 0 &&
-        bounding.left >= 0 &&
-        bounding.bottom <= (resolution.height) &&
-        bounding.right <= (resolution.width)
-    );
-}
-
 function getContrast(color1:string, color2:string): number {
     return contrast.ratio(color1, color2, {ignoreAlpha: true})
 }
@@ -69,29 +58,34 @@ async function scrapeSite(site:string, browser: any) {
         await page.goto(site, {waitUntil: "networkidle2"});
         await page.setViewport({
             ...resolution,
-            deviceScaleFactor: 1,
+            deviceScaleFactor: 1
         });
         const path = `${getS3FolderPath(site, resolution)}`
         const imagePath = `${path}/image.jpg`;
-        //@ts-ignore
-        await processSite(site, typographicElements, path, imagePath, resolution);
+        await processSite(site, path, imagePath, resolution);
         return await page.screenshot({ path: `tmp/${imagePath}`, quality: 100});
       }, Promise.resolve());
 
-    async function processSite(siteID:string, selector: string, path: string, imagePath: string, resolution: Resolution): Promise<any> {
-        const rawElements = await page.evaluate((selector: string)=> {
-            const elements = document.querySelectorAll(selector);
+    async function processSite(siteID:string, path: string, imagePath: string, resolution: Resolution): Promise<any> {
+        const rawElements = await page.evaluate(()=> {
+            const parsedElements = [];
+            const IGNORE = ["style", "script", "noscript"];
+            const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
 
-            const parsed = Array.from(elements).map(element => {
-                const rect = element.getBoundingClientRect();
-                const styles = window.getComputedStyle(element);
-                const text = element.textContent.trim();
-                const tagName = element.tagName;
+            let node:any;
+            while ((node = walker.nextNode()) !== null) {
+                const parent = node.parentNode;
+                const text = node.nodeValue.trim();
+                const tagName = parent.tagName;
+                if (IGNORE.includes(tagName)|| text.length === 0) {
+                    continue;
+                }
 
+                const rect = parent.getBoundingClientRect();
+                const styles = window.getComputedStyle(parent);
                 const { fontWeight, fontSize, color, backgroundColor, display, visibility } = styles;
-                //@ts-ignore
                 const { width, height, top, bottom, right, left, x, y} = rect;
-                return   {
+                parsedElements.push({
                     text,
                     tagName,
                     rect: {x, y, width, height, top, bottom, right, left},
@@ -102,24 +96,19 @@ async function scrapeSite(site:string, browser: any) {
                         backgroundColor,
                         fontWeight: parseFloat(fontSize),
                         fontSize: parseFloat(fontWeight),
-                        },
-
-                };
-
-            });
-            return parsed;
-
-        }, selector);
+                    },
+                });
+            }
+            return parsedElements;
+        });
 
         const elements: Element[] = rawElements.map((elem) => {
             return {
                 ...elem,
                 id: shortid.generate(),
-                isInViewport: isInViewport(elem.rect, resolution),
-                constrast: getContrast(elem.styles.color, elem.styles.backgroundColor),
+                contrast: getContrast(elem.styles.color, elem.styles.backgroundColor),
             }
         })
         await writeJSON(path, {siteID, imagePath, resolution, elements});
     }
 }
-

@@ -28,8 +28,7 @@ const Img = styled.img`
 
 // TODO: add type definition
 function isVisible(element: any): boolean {
-  return element.isInViewport
-    && element.styles.display !== "none"
+  return element.styles.display !== "none"
     && element.styles.visibility !== "hidden"
     && element.text !== ""
     && (element.rect.width !== 0 && element.rect.height !== 0);
