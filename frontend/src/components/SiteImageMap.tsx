@@ -1,17 +1,9 @@
 import styled from "@emotion/styled";
-import { grey } from "@material-ui/core/colors";
 import React, { useState } from "react";
 // @ts-ignore
-import ImageMapper from "react-image-mapper";
 import { Element, Sitedata } from "../../../backend/common/types";
 
 const BUCKET_URL = "https://typography-test-app-scraped-data.s3.eu-central-1.amazonaws.com/";
-
-const Container = styled.div`
-  position: relative;
-  display: inline-block; /* <= shrinks container to image size */
-  transition: transform 150ms ease-in-out;
-`;
 
 const Svg = styled.svg`
   position: absolute;
@@ -44,18 +36,9 @@ interface Props {
 
 export default function SiteImageMap(props: Props) {
 
-  const { sitedata, selectedElementIDs, maxSelectableElements = 5, width, onClick} = props;
+  const { sitedata, selectedElementIDs,  width, onClick} = props;
   const { imagePath, elements, resolution } = sitedata;
   const [hoveredArea, setHoveredArea] = useState<string|undefined>(undefined);
-
-  function getTipText(area: Element): string {
-    if (selectedElementIDs.includes(area.id)) {
-      return "selected";
-    } else if (maxSelectableElements <= selectedElementIDs.length) {
-      return "maximum number reached";
-    }
-    return `${selectedElementIDs.length + 1}`;
-  }
 
   const visibleElements = elements.filter((elem: Element) => isVisible(elem));
   return (
