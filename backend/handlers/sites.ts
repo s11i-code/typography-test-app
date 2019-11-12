@@ -10,9 +10,8 @@ import uuid from 'uuid';
 const dynamoDb = new DynamoDB.DocumentClient();
 const s3 = new S3();
 
-//TODO only allow requests from the frontend
 const headers = {
-  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Origin': 'https://master.d7s4am5xcgjzr.amplifyapp.com',
   'Access-Control-Allow-Credentials': true,
 };
 
