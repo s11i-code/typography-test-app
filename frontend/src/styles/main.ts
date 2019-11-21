@@ -33,9 +33,7 @@ export default `
     z-index: 1000;
     rect {
       rx: 6;
-      width: 20px;
-      height: 20px;
-      fill: rgba(0,0,0,0.6);
+      fill: rgba(0,0,0,0.8);
     }
 
     text {

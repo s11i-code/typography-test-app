@@ -34,13 +34,21 @@ interface Props {
   width: number;
 }
 
+const TOOLTIP_SIZE_PX = 25;
 export default function SiteImageMap(props: Props) {
 
   const { sitedata, selectedElementIDs,  width, onClick} = props;
   const { imagePath, elements, resolution } = sitedata;
-  const [hoveredArea, setHoveredArea] = useState<string|undefined>(undefined);
+  const [hoveredElement, setHoveredElement] = useState<string|undefined>(undefined);
 
   const visibleElements = elements.filter((elem: Element) => isVisible(elem));
+  console.log("Number of visible elements", visibleElements.length);
+  console.log("Visible elements ", visibleElements.map(({text}) => text));
+
+  const handleHoverElement = (elemId: string) => {
+    console.log("Hovered element", sitedata.elements.filter(({id}) => id === elemId));
+    setHoveredElement(elemId);
+  };
   return (
     <div>
       {imagePath &&
@@ -50,10 +58,10 @@ export default function SiteImageMap(props: Props) {
 
             {visibleElements
               .map(({rect, id}) => {
-                const bordered = hoveredArea === id || selectedElementIDs.includes(id);
+                const bordered = hoveredElement === id || selectedElementIDs.includes(id);
                 return (<rect
                   key={id}
-                  fillOpacity={selectedElementIDs.includes(id) ? "0.4"   : "0"}
+                  fillOpacity={selectedElementIDs.includes(id) ? "0.3"   : "0"}
                   y={rect.top}
                   x={rect.left}
                   onClick={() => onClick(id)}
@@ -61,25 +69,30 @@ export default function SiteImageMap(props: Props) {
                   width={rect.width}
                   style={{cursor: "pointer"}}
                   stroke={bordered ? "grey" : undefined}
-                  onMouseEnter={() => setHoveredArea(id)}
-                  onMouseLeave={() => setHoveredArea(undefined)}
+                  onMouseEnter={ () => handleHoverElement(id)}
+                  onMouseLeave={() => setHoveredElement(undefined)}
             />);
           })}
 
         {selectedElementIDs
               .map((id, idx) => {
                 const elem = visibleElements.find((el) => el.id  === id) as Element;
-                const x = elem.rect.left +  elem.rect.width - 20;
-                const y = elem.rect.top + 2;
+                const { rect } = elem;
+                const x = rect.left + rect.width - TOOLTIP_SIZE_PX;
+                const y = rect.top + (rect.height - TOOLTIP_SIZE_PX) / 2;
                 return (
                   <g
                     key={`tooltip-${elem.id}`}
                     className="tooltip"
                   >
-                    <rect x={x} y={y}/>
-                    <text y={y} x={x + 5} >{idx + 1}</text>
+                    <rect
+                      width={TOOLTIP_SIZE_PX}
+                      height={TOOLTIP_SIZE_PX}
+                      x={x}
+                      y={y}
+                    />
+                    <text y={y + 3} x={x + 8} >{idx + 1}</text>
                   </g>);
-
               })
             }
           </Svg>
