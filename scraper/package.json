@@ -5,9 +5,9 @@
   "main": "scrapeSites.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "scrape": "node_modules/.bin/ts-node scrapeSites.ts",
+    "scrape": "rm -rf tmp && node_modules/.bin/ts-node scrapeSites.ts",
     "sync": "aws s3 sync ./tmp/ s3://typography-test-app-scraped-data  --profile satu-personal-cli --acl public-read",
-    "scrape-sync": "rm -rf tmp && npm run scrape && npm run sync"
+    "scrape-sync": "npm run scrape && npm run sync"
   },
   "author": "",
   "license": "ISC",

@@ -18,14 +18,6 @@ const Img = styled.img`
   height: auto;
 `;
 
-// TODO: add type definition
-function isVisible(element: any): boolean {
-  return element.styles.display !== "none"
-    && element.styles.visibility !== "hidden"
-    && element.text !== ""
-    && (element.rect.width !== 0 && element.rect.height !== 0);
-}
-
 interface Props {
   sitedata: Sitedata;
   onClick: (id: string) => void;
@@ -41,9 +33,8 @@ export default function SiteImageMap(props: Props) {
   const { imagePath, elements, resolution } = sitedata;
   const [hoveredElement, setHoveredElement] = useState<string|undefined>(undefined);
 
-  const visibleElements = elements.filter((elem: Element) => isVisible(elem));
-  console.log("Number of visible elements", visibleElements.length);
-  console.log("Visible elements ", visibleElements.map(({text}) => text));
+  console.log("Element texts", elements.map(({text}) => text));
+  console.log("Elements ", elements);
 
   const handleHoverElement = (elemId: string) => {
     console.log("Hovered element", sitedata.elements.filter(({id}) => id === elemId));
@@ -56,27 +47,28 @@ export default function SiteImageMap(props: Props) {
           <Img src={ `${BUCKET_URL}${imagePath}`}/>
           <Svg width={width} viewBox={`0 0 ${resolution.width} ${resolution.height}`}>
 
-            {visibleElements
+            {elements
               .map(({rect, id}) => {
                 const bordered = hoveredElement === id || selectedElementIDs.includes(id);
-                return (<rect
-                  key={id}
-                  fillOpacity={selectedElementIDs.includes(id) ? "0.3"   : "0"}
-                  y={rect.top}
-                  x={rect.left}
-                  onClick={() => onClick(id)}
-                  height={rect.height}
-                  width={rect.width}
-                  style={{cursor: "pointer"}}
-                  stroke={bordered ? "grey" : undefined}
-                  onMouseEnter={ () => handleHoverElement(id)}
-                  onMouseLeave={() => setHoveredElement(undefined)}
-            />);
+                return (
+                  <rect
+                    key={id}
+                    fillOpacity={selectedElementIDs.includes(id) ? "0.3"   : "0"}
+                    y={rect.top}
+                    x={rect.left}
+                    onClick={() => onClick(id)}
+                    height={rect.height}
+                    width={rect.width}
+                    style={{cursor: "pointer"}}
+                    stroke={bordered ? "grey" : undefined}
+                    onMouseEnter={ () => handleHoverElement(id)}
+                    onMouseLeave={() => setHoveredElement(undefined)}
+                  />);
           })}
 
         {selectedElementIDs
               .map((id, idx) => {
-                const elem = visibleElements.find((el) => el.id  === id) as Element;
+                const elem = elements.find((el) => el.id  === id) as Element;
                 const { rect } = elem;
                 const x = rect.left + rect.width - TOOLTIP_SIZE_PX;
                 const y = rect.top + (rect.height - TOOLTIP_SIZE_PX) / 2;

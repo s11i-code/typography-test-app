@@ -9,7 +9,7 @@ export const sites = [
     "https://www.helsinki.fi/en",
     "https://www.suomi24.fi/",
     "https://mobile.twitter.com/",
-    "https://twitter.com/"
+    "https://stackoverflow.com/"
 ];
 export const resolutions: Resolution[] = [
     {width: 300, height: 1200},

@@ -10,7 +10,7 @@ export interface Sitedata {
     elements: Element[];
 }
 
-type Rect = {
+export type Rect = {
     top: number,
     bottom: number,
     left: number,
@@ -21,9 +21,11 @@ type Rect = {
 
 export interface Element {
     id: string,
-    tagName: string,
-    text: string,
     rect: Rect,
+    style: any,
+    text: string,
+    tagName: string,
+    contrastRatio: number,
 }
 
 export interface GetSiteRequestParams {
