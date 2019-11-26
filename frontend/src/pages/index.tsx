@@ -14,16 +14,18 @@ const IndexPage = () => (
           <section>
             <h1>Data science project needs data</h1>
             <section><h2>Can I help?</h2>
-            <p>Yes, it's easy! You will be shown a bunch of images of real websites
+            <p>Yes, it's easy! You will be shown several images of real websites
               and you just click (or tap) on text elements in the order as you read them.
              You can select {maxSelectableElements} elements. The first one will be a demo site.
             </p>
-
+            <p>You can browse them casually. No need to pay any more attention to these sites
+              than any other site you have browsed on.
+            </p>
             </section>
             <section><h2>What is this for?</h2>
 
             <p>I built this site to collect data for a University of Helsinki  <a href="https://courses.helsinki.fi/fi/csm14210">seminar research project
-             </a>. In it, I try to build a model for the order in which we observe text based on its
+             </a>, where I try to build a model for the order in which we observe text based on its
                characteristics, such as size, thickness, color, position etc.</p>
             <p>
                Thank you in advance! Your help is much appreciated.
@@ -32,7 +34,7 @@ const IndexPage = () => (
             </p>
             </section>
             <div className="button-container">
-              <Link className="button" to="/evaluator/">Start evaluating</Link>
+              <Link className="button" to="/evaluator/">Start</Link>
             </div>
           </section>
         </main>

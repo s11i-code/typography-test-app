@@ -32,7 +32,7 @@ const IndexPage = () => (
                 NOTE: not all text element can be selected, even if they contain text (mainly images).
                 If the item is not clickable, you can just skip over to the next one you read.
               </p>
-              <p  style={{textAlign: "center"}}> <img width="200px" src={"/demo-img.png"} alt="demo" /></p>
+              <p style={{textAlign: "center"}}> <img width="200px" src={"/demo-img.png"} alt="demo" /></p>
             </section>
           </section>
         </main>
