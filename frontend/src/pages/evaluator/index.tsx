@@ -5,8 +5,6 @@ import DialogContent from "@material-ui/core/DialogContent";
 import { navigate } from "@reach/router";
 import { API } from "aws-amplify";
 import React, {useEffect, useState} from "react";
-// @ts-ignore
-import ImageMapper from "react-image-mapper";
 import { resolutions, sites } from "../../../../backend/common";
 import { EvaluateSiteRequestParams, GetSiteRequestParams, Sitedata } from "../../../../backend/common/types";
 import Page from "../../components/Page";
