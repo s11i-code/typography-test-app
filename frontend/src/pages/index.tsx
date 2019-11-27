@@ -13,23 +13,26 @@ const IndexPage = () => (
         <main>
           <section>
             <h1>Data science project needs data</h1>
-            <section><h2>Can I help?</h2>
-            <p>Yes, it's easy! You will be shown several images of real websites
-              and you just click (or tap) on text elements in the order as you read them.
-             You can select {maxSelectableElements} elements. The first one will be a demo site.
-            </p>
-            <p>You can browse them casually. No need to pay any more attention to these sites
-              than any other site you have browsed on.
-            </p>
-            </section>
+
             <section><h2>What is this for?</h2>
 
             <p>I built this site to collect data for a University of Helsinki  <a href="https://courses.helsinki.fi/fi/csm14210">seminar research project
              </a>, where I try to build a model for the order in which we observe text based on its
-               characteristics, such as size, thickness, color, position etc.</p>
+               characteristics, such as size, thickness, color, position etc.
+            </p>
+
+            </section>
+
+            <section><h2>Can I help?</h2>
+            <p>Yes, you can! You will be shown several images of real websites
+              and you just click (or tap if you're on mobile) on <b>text elements in the same order
+              as you read them</b>.
+             You can select {maxSelectableElements}. The first shown site will be a demo site.
+            </p>
             <p>
-               Thank you in advance! Your help is much appreciated.
-              <br/>
+              Just read the page as you normally would, you don't have pay any extra attention.
+            </p>
+            <p>
                -Satu
             </p>
             </section>

@@ -16,12 +16,12 @@ const IndexPage = () => (
       <Container>
         <main>
           <section>
-          <H1>Thank you</H1>
-          <p> You made it to the end. There are no more pictures. Thank you for helping me (and science)!
-            <br/>
-            <br/>
+           <H1>Thank you</H1>
+            <p> You made it to the end. There are no more pictures. Thank you for helping me (and science)!
+             <br/>
+             <br/>
             - Satu
-          </p>
+            </p>
           </section>
         </ main>
       </Container>

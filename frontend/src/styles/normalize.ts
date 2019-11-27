@@ -22,13 +22,17 @@ export default `
     width: 100%;
     overflow-x: hidden;
     overflow-y: scroll;
-    background-color: ${colors.gray.light};
+    background-color: ${colors.gray.silver};
     -webkit-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%;
+    font-family: ${fonts.body};
   }
 
+  b {
+    font-weight: 600;
+  }
   p {
-    font-family: ${fonts.body};
+    font-weight: 300;
 
   }
   a {
@@ -88,7 +92,7 @@ export default `
 
   h1, h2, h3, h4, h5, h6 {
     font-family: ${fonts.heading};
-    font-weight: 500;
+    font-weight: 400;
     line-height: ${dimensions.lineHeight.heading};
     text-rendering: optimizeLegibility;
     color: ${colors.gray.dark};
@@ -101,8 +105,8 @@ export default `
 
   h2 {
     font-size: ${dimensions.headingSizes.h2}%;
-    margin-top: 2rem;
-    margin-bottom: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
   }
 
   h3 {

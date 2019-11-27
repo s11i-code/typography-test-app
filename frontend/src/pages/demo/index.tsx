@@ -11,7 +11,6 @@ const IndexPage = () => (
       <Container>
         <main>
           <section>
-            <section>
               <h1 style={{marginBottom: "1rem"}}>Demo site</h1>
 
               <p>This is a demo site to show you the idea. </p>
@@ -25,16 +24,15 @@ const IndexPage = () => (
               </p>
 
               <p style={{textAlign: "center"}}>
-                <button style={{marginTop: "1rem"}} className="small button">Try me</button>
+                <button style={{marginTop: "1rem"}} className="small button">You can press this</button>
               </p>
 
               <p>
-                NOTE: not all text element can be selected, even if they contain text (mainly images).
+                NOTE: not all text can be selected, even if they contain text (mainly images).
                 If the item is not clickable, you can just skip over to the next one you read.
               </p>
               <p style={{textAlign: "center"}}> <img width="200px" src={"/demo-img.png"} alt="demo" /></p>
             </section>
-          </section>
         </main>
       </Container>
     </Page>

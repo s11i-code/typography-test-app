@@ -81,10 +81,11 @@ export default function EvaluatorPage(props: {location: Location}) {
         (<>
           <Dialog open={selectedElementIDs.length === maxSelectableElements}>
             <DialogContent>
-              <p>Thanks, your reply has been saved. </p>
+              <p>Thanks, your reply has been saved.  </p>
+
             </DialogContent>
             <DialogActions>
-              <button onClick={handleNextButtonClick} className="button small">Give me more</button>
+              <button onClick={handleNextButtonClick} className="button small">Next site</button>
             </DialogActions>
           </Dialog>
           <Page>

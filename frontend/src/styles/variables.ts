@@ -5,6 +5,7 @@ export const colors = {
   accent: "#ffb238",
   brand: "rgb(74, 105, 189)",
   electricViolet: "#6610F2",
+  buttonColor: "#5C6784",
   success: "#37b635",
   warning: "#ec1818",
   ui: {
@@ -18,14 +19,15 @@ export const colors = {
     calm: "rgba(0, 0, 0, 0.54)",
     copy: "hsla(270, 15.797828016000002%, 0%, 0.88)",
     dark: "#394b59",
+    silver: "rgba(179, 185, 200, 0.7)",
   },
-  white: "#fafafa",
+  white: "#fff",
   black: "#000",
 };
 
 export const fonts = {
-  heading: "Noto Sans SC",
-  body: "Noto Serif SC",
+  heading: "Alata",
+  body: "Public Sans",
   sansSerif:
     '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif',
   serif: 'Georgia, "Times New Roman", Times, serif',
@@ -48,8 +50,8 @@ export const widths = {
 
 export const dimensions = {
   fontSize: {
-    regular: 16,
-    large: 18,
+    regular: 18,
+    large: 20,
   },
   headingSizes: {
     h1: 160,

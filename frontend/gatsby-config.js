@@ -3,9 +3,9 @@
 
 module.exports = {
   siteMetadata: {
-    description: "",
+    description: "Select text elements in in the same order as you reed them",
     keywords: "",
-    title: "Text evaluator",
+    title: "Data collector app",
   },
   plugins: [
     {
@@ -49,8 +49,9 @@ module.exports = {
       resolve: `gatsby-plugin-google-fonts`,
       options: {
         fonts: [
-          `Noto Sans SC\:700`,
-          `Noto Serif SC`,
+          `Public Sans\:600`,
+          `Public Sans\:300`,
+          `Alata`,
         ],
         display: "block",
       },
