@@ -4,25 +4,30 @@ import DialogContent from "@material-ui/core/DialogContent";
 
 import { navigate } from "@reach/router";
 import { API } from "aws-amplify";
+import queryString from "query-string";
 import React, {useEffect, useState} from "react";
 import { resolutions, sites } from "../../../../backend/common";
 import { EvaluateSiteRequestParams, GetSiteRequestParams, Sitedata } from "../../../../backend/common/types";
 import Page from "../../components/Page";
-import Spinner from "../../components/Spinner";
-
 import SiteImageMap from "../../components/SiteImageMap";
+import Spinner from "../../components/Spinner";
 import { maxSelectableElements } from "../../config";
 import IndexLayout from "../../layouts";
 import {getWindowWidth, isBuilding} from "../../utils/window";
+
 // TODO make this into a class component, this is getting messy
-export default function EvaluatorPage() {
+
+export default function EvaluatorPage(props: {location: Location}) {
 
   const [sitesdata, setSitesdata] = useState<Sitedata[]>([]);
   const [selectedElementIDs, setSelectedElementIDs] = useState<string[]>([]);
-  const [siteIdx, setSiteIdx] = useState(0);
 
   const [loading, setLoading] = useState(false);
   const windowWidth =  getWindowWidth();
+
+  const queryParams = queryString.parse((props.location as any).search);
+
+  const siteIdx = queryParams.site && !isNaN(queryParams.site as any) ? Number(queryParams.site) : 0;
   const sitedata: Sitedata = sitesdata[siteIdx];
 
   async function fetchData() {
@@ -40,7 +45,6 @@ export default function EvaluatorPage() {
     const alreadySelected = selectedElementIDs.includes(elemId);
     const newSelectedItems = alreadySelected ?
       selectedElementIDs.filter((id) => id !== elemId) : [...selectedElementIDs, elemId];
-
     setSelectedElementIDs(newSelectedItems);
     if (newSelectedItems.length === maxSelectableElements) {
       const data: EvaluateSiteRequestParams = {
@@ -55,15 +59,16 @@ export default function EvaluatorPage() {
 
   useEffect(() => {
     if (isBuilding()) { return;  }
-
+    // only happens when component is mounted
     fetchData();
   }, []);
 
   function handleNextButtonClick(event: React.MouseEvent<HTMLElement>) {
     event.preventDefault();
     if (siteIdx + 1 < sites.length) {
-      setSiteIdx(siteIdx + 1);
       setSelectedElementIDs([]);
+      navigate(`/evaluator/?site=${siteIdx + 1}`);
+
     } else {
       navigate("/thank-you");
     }
