@@ -20,6 +20,7 @@
     "typescript": "^3.6.4"
   },
   "dependencies": {
+    "color": "^3.1.2",
     "ts-node": "^8.4.1",
     "tslint": "^5.20.0"
   }

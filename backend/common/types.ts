@@ -20,12 +20,13 @@ export type Rect = {
 }
 
 export interface Element {
-    id: string,
-    rect: Rect,
-    style: any,
-    text: string,
-    tagName: string,
-    contrastRatio: number,
+    id: string;
+    rect: Rect;
+    style: any;
+    text: string;
+    tagName: string;
+    colorData: {
+    }
 }
 
 export interface GetSiteRequestParams {

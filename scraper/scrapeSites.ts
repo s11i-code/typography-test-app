@@ -1,12 +1,27 @@
 import contrast from "get-contrast";
+import Color from 'color';
 import fs from "fs";
 import shortid from "shortid";
 import puppeteer, { Page } from "puppeteer";
 import { sites, resolutions, getS3FolderPath } from '../backend/common';
 import { Resolution, Element, Rect } from "../backend/common/types";
 
+function generateId(): string {
+    return shortid.generate()
+}
+
 function getContrast(color1:string, color2:string): number {
     return contrast.ratio(color1, color2, {ignoreAlpha: true})
+}
+
+function getColorData(col: string) {
+    const color = Color(col);
+    return {
+        hsl: color.hsl(),
+        luminosity: color.luminosity(),
+        isDark: color.isDark(),
+        isLight: color.isLight(),
+    }
 }
 
 async function writeJSON(path: string, data:any) {
@@ -51,8 +66,9 @@ scrapeSites();
 async function scrapeSite(site:string, browser: any) {
     const page: Page = await browser.newPage();
     await page.exposeFunction("log", console.log);
-    await page.exposeFunction("generateId", shortid.generate);
+    await page.exposeFunction("generateId", generateId);
     await page.exposeFunction("getContrast", getContrast);
+    await page.exposeFunction("getColorData", getColorData);
 
     // use reduce here to execute loop sequentially
     return resolutions.reduce( async (previousPromise: Promise<any>, resolution:Resolution) => {
@@ -89,13 +105,17 @@ async function scrapeSite(site:string, browser: any) {
                 const rect: Rect = { top, bottom, left, right, height, width }
                 const style = window.getComputedStyle(parent);
                 const { fontWeight, fontSize, color, backgroundColor, display, visibility, opacity } = style;
+                const colorData = {
+                    textColor: await getColorData(color),
+                    backgroundColor: await getColorData(backgroundColor),
+                    contrastRatio: await getContrast(color, backgroundColor),
+                }
                 const element: Element = {
                     text,
                     rect,
                     tagName,
-                    // @ts-ignore: function does not exist
+                    colorData,
                     id: await generateId(),
-                    contrastRatio: await getContrast(color, backgroundColor),
                     style: {
                         color,
                         display,
