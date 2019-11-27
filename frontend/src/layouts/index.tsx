@@ -36,6 +36,7 @@ const IndexLayout: React.FC = ({ children }) => (
           title={data.site.siteMetadata.title}
           meta={[
             { name: "description", content: data.site.siteMetadata.description },
+            { property: "og:description", content: data.site.siteMetadata.description },
             { name: "keywords", content: data.site.siteMetadata.keywords },
           ]}
         />
