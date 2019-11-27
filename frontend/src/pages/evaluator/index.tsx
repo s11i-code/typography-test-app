@@ -1,9 +1,9 @@
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-
-import { navigate } from "@reach/router";
+import { globalHistory} from "@reach/router";
 import { API } from "aws-amplify";
+import { Link } from "gatsby";
 import queryString from "query-string";
 import React, {useEffect, useState} from "react";
 import { resolutions, sites } from "../../../../backend/common";
@@ -63,16 +63,16 @@ export default function EvaluatorPage(props: {location: Location}) {
     fetchData();
   }, []);
 
-  function handleNextButtonClick(event: React.MouseEvent<HTMLElement>) {
-    event.preventDefault();
-    if (siteIdx + 1 < sites.length) {
-      setSelectedElementIDs([]);
-      navigate(`/evaluator/?site=${siteIdx + 1}`);
+  useEffect(() => {
+    // site changed, so reset selected elements
+    globalHistory.listen(({ action }) => {
+      if (action === "PUSH") {
+        setSelectedElementIDs([]);
+      }
+    });
+  }, []);
 
-    } else {
-      navigate("/thank-you");
-    }
-  }
+  const pageIsLast = siteIdx >= sites.length - 1;
 
   return (
     <IndexLayout>
@@ -82,10 +82,12 @@ export default function EvaluatorPage(props: {location: Location}) {
           <Dialog open={selectedElementIDs.length === maxSelectableElements}>
             <DialogContent>
               <p>Thanks, your reply has been saved.  </p>
-
             </DialogContent>
             <DialogActions>
-              <button onClick={handleNextButtonClick} className="button small">Next site</button>
+            {pageIsLast ?
+              <Link className="button small" to="/thank-you" >Next</Link> :
+              <Link className="button small" to={`/evaluator/?site=${siteIdx + 1}`}> Next site</Link>
+            }
             </DialogActions>
           </Dialog>
           <Page>

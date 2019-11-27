@@ -3,10 +3,11 @@
 
 module.exports = {
   siteMetadata: {
-    description: "Select text elements in in the same order as you reed them",
+    description: "Select text elements in the same order as you read them",
     keywords: "",
     title: "Data collector app",
   },
+
   plugins: [
     {
       resolve: "gatsby-source-filesystem",
