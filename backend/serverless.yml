@@ -40,12 +40,14 @@ functions:
       - http:
           method: post
           path: site/evaluate
+          cors: true
   get-sites:
     handler: handlers/sites.getSites
     events:
       - http:
           method: get
           path: sites
+          cors: true
 resources:
   Resources:
     RankedElementsTable:
