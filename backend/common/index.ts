@@ -3,13 +3,15 @@ import { Resolution } from "./types";
 
 export const sites = [
     "https://master.d7s4am5xcgjzr.amplifyapp.com/demo",
+    "https://www.wikipedia.org/",
     "https://github.com/satueveliina",
+    "https://stackoverflow.com/",
     "https://www.smartly.io/",
     "https://yle.fi/",
     "https://www.helsinki.fi/en",
-    "https://www.suomi24.fi/",
+    "https://www.hel.fi/helsinki/en",
     "https://mobile.twitter.com/",
-    "https://stackoverflow.com/"
+    "https://yle.fi/uutiset/osasto/news/",
 ];
 export const resolutions: Resolution[] = [
     {width: 300, height: 1200},
