@@ -1,6 +1,8 @@
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
+import Snackbar from "@material-ui/core/Snackbar";
+
 import { globalHistory} from "@reach/router";
 import { API } from "aws-amplify";
 import { Link } from "gatsby";
@@ -23,6 +25,9 @@ export default function EvaluatorPage(props: {location: Location}) {
   const [selectedElementIDs, setSelectedElementIDs] = useState<string[]>([]);
 
   const [loading, setLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string|undefined>(undefined);
+
   const windowWidth =  getWindowWidth();
 
   const queryParams = queryString.parse((props.location as any).search);
@@ -35,10 +40,13 @@ export default function EvaluatorPage(props: {location: Location}) {
     const queryStringParameters: GetSiteRequestParams = {resolutionIdx};
     setLoading(true);
 
-    const result = await API.get("backend", "/sites", { queryStringParameters });
-    setLoading(false);
-
-    setSitesdata(result.data);
+    API.get("backend", "/sites", { queryStringParameters })
+    .then((result) => setSitesdata(result.data))
+    .catch((err) => {
+      console.error("Error fetching data", err);
+      setError("Can't fetch data.");
+    })
+    .finally(() => setLoading(false));
   }
 
   function toggleSelectedElementIds(elemId: string): void {
@@ -52,8 +60,13 @@ export default function EvaluatorPage(props: {location: Location}) {
         selectedElementIDs,
         siteID: sitedata.siteID,
       };
-      setLoading(true);
-      API.post("backend", "/site/evaluate", {body: data}).then(() => setLoading(false));
+      setSaving(true);
+      API.post("backend", "/site/evaluate", {body: data})
+      .catch((err) => {
+        console.error("Error saving data", err);
+        setError("Can't save data. ");
+      })
+      .finally(() => setSaving(false));
     }
   }
 
@@ -77,11 +90,24 @@ export default function EvaluatorPage(props: {location: Location}) {
   return (
     <IndexLayout>
       { loading && <Spinner  />}
+      <Snackbar
+        anchorOrigin={{
+          horizontal: "left",
+          vertical: "top",
+        }}
+        open={error !== undefined}
+        autoHideDuration={8000}
+        onClose={() => setError(undefined)}
+        ContentProps={{
+          "aria-describedby": "error-id",
+        }}
+        message={<span id="error-id">{error}</span>}
+      />
       { sitedata &&
         (<>
-          <Dialog open={selectedElementIDs.length === maxSelectableElements}>
+          <Dialog fullWidth maxWidth="xs" open={selectedElementIDs.length === maxSelectableElements}>
             <DialogContent>
-              <p>Thanks, your reply has been saved.  </p>
+              { saving ? <Spinner /> : <p>Thanks, your reply has been saved.  </p>}
             </DialogContent>
             <DialogActions>
             {pageIsLast ?
