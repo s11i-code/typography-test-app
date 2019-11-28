@@ -17,4 +17,4 @@ const config = {
 const env = process.env.NODE_ENV || "development";
 export default (config as any)[env] ;
 
-export const maxSelectableElements = 3;
+export const maxSelectableElements = 4;
