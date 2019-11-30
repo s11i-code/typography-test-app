@@ -37,6 +37,7 @@ export interface EvaluateSiteRequestParams {
     siteID: string;
     resolution: Resolution;
     selectedElementIDs: string[];
+    viewport: Resolution,
 }
 
 

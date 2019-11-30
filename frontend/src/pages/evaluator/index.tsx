@@ -15,7 +15,7 @@ import SiteImageMap from "../../components/SiteImageMap";
 import Spinner from "../../components/Spinner";
 import { maxSelectableElements } from "../../config";
 import IndexLayout from "../../layouts";
-import {getWindowWidth, isBuilding} from "../../utils/window";
+import { buildIsOngoing, getViewportHeight, getViewportWidth } from "../../utils/window";
 
 // TODO make this into a class component, this is getting messy
 
@@ -28,13 +28,14 @@ export default function EvaluatorPage(props: {location: Location}) {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string|undefined>(undefined);
 
-  const windowWidth =  getWindowWidth();
+  const windowWidth =  getViewportWidth();
 
   const queryParams = queryString.parse((props.location as any).search);
 
   const siteIdx = queryParams.site && !isNaN(queryParams.site as any) ? Number(queryParams.site) : 0;
   const sitedata: Sitedata = sitesdata[siteIdx];
 
+  console.log('MOI')
   async function fetchData() {
     const resolutionIdx = selectEvaluatedResolutionIndex(windowWidth);
     const queryStringParameters: GetSiteRequestParams = {resolutionIdx};
@@ -59,8 +60,13 @@ export default function EvaluatorPage(props: {location: Location}) {
         resolution: sitedata.resolution,
         selectedElementIDs,
         siteID: sitedata.siteID,
+        viewport: {
+          height: getViewportHeight(),
+          width: getViewportWidth(),
+        },
       };
       setSaving(true);
+      console.log("data", data);
       API.post("backend", "/site/evaluate", {body: data})
       .catch((err) => {
         console.error("Error saving data", err);
@@ -71,7 +77,7 @@ export default function EvaluatorPage(props: {location: Location}) {
   }
 
   useEffect(() => {
-    if (isBuilding()) { return;  }
+    if (buildIsOngoing()) { return;  }
     // only happens when component is mounted
     fetchData();
   }, []);
