@@ -1,18 +1,18 @@
-
 import { Resolution } from "./types";
 
 export const sites = [
     "https://master.d7s4am5xcgjzr.amplifyapp.com/demo",
-    "https://www.wikipedia.org/",
+    "https://www.wikipedia.org",
     "https://github.com/satueveliina",
-    "https://stackoverflow.com/",
-    "https://www.smartly.io/",
+    "https://stackoverflow.com",
+    "https://www.smartly.io",
     "https://yle.fi/",
-    "https://www.helsinki.fi/en",
-    "https://www.hel.fi/helsinki/en",
-    "https://mobile.twitter.com/",
-    "https://yle.fi/uutiset/osasto/news/",
+    "https://www.helsinki.fi/en/university/units-and-faculties",
+    "https://www.reddit.com/search?q=tottenham&source=trending&type=link",
+    "https://mobile.twitter.com",
+    "https://yle.fi/uutiset/osasto/news",
 ];
+
 export const resolutions: Resolution[] = [
     {width: 300, height: 1200},
     {width: 400, height: 1200},
