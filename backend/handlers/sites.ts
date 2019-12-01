@@ -66,14 +66,7 @@ export const evaluate: APIGatewayProxyHandler = async (event, _context) => {
           id,
           ...JSON.parse(event.body),
        }
-      }).promise()
-      .catch(error => ({
-        error,
-        headers,
-        status: 500,
-        message: "Error occurred while writing to Dynamo",
-      }))
-    )
+      }).promise())
 
     return {
       headers,
@@ -84,6 +77,13 @@ export const evaluate: APIGatewayProxyHandler = async (event, _context) => {
     };
 
   } catch(err) {
-    console.log(err)
+    console.log('Error encountered', err)
+    return {
+      headers,
+      statusCode: 500,
+      body: JSON.stringify({
+        msg: 'error',
+      }, null, 2),
+    };
   }
 }
