@@ -24,6 +24,11 @@ function getColorData(col: string) {
     }
 }
 
+function isVisible(takesSpace: boolean, text:string, display:string, visibility:string, opacity:string, clip:string) {
+    // todo: check at least all of these techniques: https://webaim.org/techniques/css/invisiblecontent/
+    return (takesSpace &&  text.length > 0 && visibility !== 'hidden' && display !== 'none' && opacity !== "0", clip !== "rect(1px, 1px, 1px, 1px)") ;
+}
+
 async function writeJSON(path: string, data:any) {
     const jsonString = JSON.stringify(data);
     const syncFolderPath = `tmp/${path}`
@@ -69,11 +74,13 @@ async function scrapeSite(site:string, browser: any) {
     await page.exposeFunction("generateId", generateId);
     await page.exposeFunction("getContrast", getContrast);
     await page.exposeFunction("getColorData", getColorData);
+    await page.exposeFunction("isVisible", isVisible);
+
 
     // use reduce here to execute loop sequentially
     return resolutions.reduce( async (previousPromise: Promise<any>, resolution:Resolution) => {
         await previousPromise;
-        await page.goto(site, {waitUntil: "networkidle2"});
+        await page.goto(site, {waitUntil: "networkidle2", timeout: 3000000});
         await page.setViewport({
             ...resolution,
             deviceScaleFactor: 1
@@ -94,17 +101,24 @@ async function scrapeSite(site:string, browser: any) {
             while ((node = walker.nextNode()) !== null) {
                 const parent = node.parentNode;
                 const text = node.nodeValue.trim();
-                const takesSpace = parent.offsetWidth > 0 && parent.offsetHeight > 0;
                 const tagName = parent.tagName;
+                const style = window.getComputedStyle(parent);
 
-                if (!takesSpace || IGNORE.includes(tagName.toLowerCase())|| text.length === 0) {
+                const { fontWeight, fontSize, color, backgroundColor, display, visibility, opacity, fontFamily, clip } = style;
+                //TODO add more levels:
+                // TODO is it enough to check to highest offsetparent?
+                const offsetParents = parent.offsetParent ? [parent, parent.offsetParent] : [parent];
+                const offsetDimentions = offsetParents.map(el => [el.offsetWidth,  el.offsetHeight]).flat() ;
+                const takesSpace = offsetDimentions.every(offset => offset > 0) ;
+
+
+                const visible = await isVisible(takesSpace, text, display, visibility, opacity, clip)
+                if (!visible || IGNORE.includes(tagName.toLowerCase())) {
                     continue;
                 }
 
                 const  { top, bottom, left, right, height, width } = parent.getBoundingClientRect();
                 const rect: Rect = { top, bottom, left, right, height, width }
-                const style = window.getComputedStyle(parent);
-                const { fontWeight, fontSize, color, backgroundColor, display, visibility, opacity } = style;
                 const colorData = {
                     textColor: await getColorData(color),
                     backgroundColor: await getColorData(backgroundColor),
@@ -120,6 +134,7 @@ async function scrapeSite(site:string, browser: any) {
                         color,
                         display,
                         opacity,
+                        fontFamily,
                         visibility,
                         backgroundColor,
                         fontSize: parseFloat(fontSize),
@@ -128,11 +143,10 @@ async function scrapeSite(site:string, browser: any) {
                 }
                 parsedElements.push(element);
             }
-            console.log(parsedElements)
 
             return parsedElements;
         });
-
+        console.log(`Processed ${siteID} ${resolution.width}x${resolution.height} with ${elements.length} elements.`)
         await writeJSON(path, {siteID, imagePath, resolution, elements});
     }
 }
