@@ -9,7 +9,6 @@ export const sites = [
     "https://yle.fi/",
     "https://www.helsinki.fi/en/university/units-and-faculties",
     "https://www.reddit.com/search?q=tottenham&source=trending&type=link",
-    "https://mobile.twitter.com",
     "https://yle.fi/uutiset/osasto/news",
 ];
 
@@ -21,6 +20,8 @@ export const resolutions: Resolution[] = [
     {width: 800, height: 1200},
     {width: 1000, height: 1200},
     {width: 1500, height: 1200},
+    {width: 1700, height: 1200},
+    {width: 2000, height: 1200},
 ];
 
 export function getS3FolderPath(site: string, resolution: Resolution): string {
