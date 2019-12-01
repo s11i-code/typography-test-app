@@ -26,7 +26,7 @@ function getColorData(col: string) {
 
 function isVisible(takesSpace: boolean, text:string, display:string, visibility:string, opacity:string, clip:string) {
     // todo: check at least all of these techniques: https://webaim.org/techniques/css/invisiblecontent/
-    return (takesSpace &&  text.length > 0 && visibility !== 'hidden' && display !== 'none' && opacity !== "0", clip !== "rect(1px, 1px, 1px, 1px)") ;
+    return (takesSpace &&  text.length > 0 && visibility !== 'hidden' && display !== 'none' && opacity !== "0" && clip !== "rect(1px, 1px, 1px, 1px)") ;
 }
 
 async function writeJSON(path: string, data:any) {
