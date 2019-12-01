@@ -35,14 +35,21 @@ export default function EvaluatorPage(props: {location: Location}) {
   const siteIdx = queryParams.site && !isNaN(queryParams.site as any) ? Number(queryParams.site) : 0;
   const sitedata: Sitedata = sitesdata[siteIdx];
 
-  console.log('MOI')
+  if (sitedata && selectedElementIDs.length === 0) {
+    console.log("------------New site", sitedata.siteID);
+    console.log("Element texts", sitedata.elements.map(({text}) => text));
+    console.log("Elements ", sitedata.elements);
+  }
+
   async function fetchData() {
     const resolutionIdx = selectEvaluatedResolutionIndex(windowWidth);
     const queryStringParameters: GetSiteRequestParams = {resolutionIdx};
     setLoading(true);
 
     API.get("backend", "/sites", { queryStringParameters })
-    .then((result) => setSitesdata(result.data))
+    .then((result) => {
+      setSitesdata(result.data);
+    })
     .catch((err) => {
       console.error("Error fetching data", err);
       setError("Can't fetch data.");
@@ -52,6 +59,9 @@ export default function EvaluatorPage(props: {location: Location}) {
 
   function toggleSelectedElementIds(elemId: string): void {
     const alreadySelected = selectedElementIDs.includes(elemId);
+    if (!alreadySelected) {
+      console.log("Clicked element", sitedata.elements.filter(({id}) => id === elemId));
+    }
     const newSelectedItems = alreadySelected ?
       selectedElementIDs.filter((id) => id !== elemId) : [...selectedElementIDs, elemId];
     setSelectedElementIDs(newSelectedItems);
@@ -66,7 +76,6 @@ export default function EvaluatorPage(props: {location: Location}) {
         },
       };
       setSaving(true);
-      console.log("data", data);
       API.post("backend", "/site/evaluate", {body: data})
       .catch((err) => {
         console.error("Error saving data", err);
@@ -78,7 +87,7 @@ export default function EvaluatorPage(props: {location: Location}) {
 
   useEffect(() => {
     if (buildIsOngoing()) { return;  }
-    // only happens when component is mounted
+    // data fetch only happens when component is mounted (once per replier unless they reload)
     fetchData();
   }, []);
 
@@ -117,8 +126,8 @@ export default function EvaluatorPage(props: {location: Location}) {
             </DialogContent>
             <DialogActions>
             {pageIsLast ?
-              <Link className="button small" to="/thank-you" >Next</Link> :
-              <Link className="button small" to={`/evaluator/?site=${siteIdx + 1}`}> Next site</Link>
+              <Link className="button small" to="/thank-you" >Next site</Link> :
+              <Link className="button small" to={`/evaluator/?site=${siteIdx + 1}`}>Next site</Link>
             }
             </DialogActions>
           </Dialog>

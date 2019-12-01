@@ -18,7 +18,7 @@ export default `
   }
 
   body {
-    color: ${colors.gray.dark};
+    color: ${colors.black};
     width: 100%;
     overflow-x: hidden;
     overflow-y: scroll;
@@ -36,7 +36,7 @@ export default `
 
   }
   a {
-    color: ${colors.brand};
+    color: #1f5e60;
     text-decoration: none;
 
     &:hover,
@@ -95,7 +95,6 @@ export default `
     font-weight: 400;
     line-height: ${dimensions.lineHeight.heading};
     text-rendering: optimizeLegibility;
-    color: ${colors.gray.dark};
     margin: 0;
   }
 

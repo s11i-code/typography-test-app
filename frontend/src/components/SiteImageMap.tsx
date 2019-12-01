@@ -33,11 +33,7 @@ export default function SiteImageMap(props: Props) {
   const { imagePath, elements, resolution } = sitedata;
   const [hoveredElement, setHoveredElement] = useState<string|undefined>(undefined);
 
-  console.log("Element texts", elements.map(({text}) => text));
-  console.log("Elements ", elements);
-
   const handleHoverElement = (elemId: string) => {
-    console.log("Hovered element", sitedata.elements.filter(({id}) => id === elemId));
     setHoveredElement(elemId);
   };
   return (

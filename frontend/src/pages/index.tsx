@@ -24,13 +24,14 @@ const IndexPage = () => (
             </section>
 
             <section><h2>Can I help?</h2>
-            <p>Yes, you can! You will be shown several images of real websites
+            <p>Yes, you can and it would make my day! You will be shown several images of real websites
               and you just click (or tap if you're on mobile) on <b>text elements in the same order
-              as you read them</b>.
-             You can select {maxSelectableElements}. The first shown site will be a demo site.
+              as you read them</b>. You can select {maxSelectableElements}.
             </p>
             <p>
-              Just read the page as you normally would, you don't have pay any extra attention.
+              Just read the page as you normally would (no extra attention needed)
+              and click on the texts as you read them.
+              The first shown site will be a demo site.
             </p>
             <p>
                -Satu
@@ -45,5 +46,4 @@ const IndexPage = () => (
     </Page>
   </IndexLayout>
 );
-
 export default IndexPage;

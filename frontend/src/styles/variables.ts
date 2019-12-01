@@ -5,7 +5,7 @@ export const colors = {
   accent: "#ffb238",
   brand: "rgb(74, 105, 189)",
   electricViolet: "#6610F2",
-  buttonColor: "#5C6784",
+  buttonColor: "cadetblue",
   success: "#37b635",
   warning: "#ec1818",
   ui: {
@@ -19,10 +19,10 @@ export const colors = {
     calm: "rgba(0, 0, 0, 0.54)",
     copy: "hsla(270, 15.797828016000002%, 0%, 0.88)",
     dark: "#394b59",
-    silver: "rgba(179, 185, 200, 0.7)",
+    silver: "rgba(179, 185, 200, 0.5)",
   },
   white: "#fff",
-  black: "#000",
+  black: "rgb(28, 27, 29)",
 };
 
 export const fonts = {
