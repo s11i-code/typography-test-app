@@ -19,6 +19,7 @@ import { buildIsOngoing, getViewportHeight, getViewportWidth } from "../../utils
 
 // TODO make this into a class component, this is getting messy
 
+const MESSAGES = {};
 export default function EvaluatorPage(props: {location: Location}) {
 
   const [sitesdata, setSitesdata] = useState<Sitedata[]>([]);
@@ -122,7 +123,8 @@ export default function EvaluatorPage(props: {location: Location}) {
         (<>
           <Dialog fullWidth maxWidth="xs" open={selectedElementIDs.length === maxSelectableElements}>
             <DialogContent>
-              { saving ? <Spinner /> : <p>Thanks, your reply has been saved.  </p>}
+              { saving && <Spinner /> }
+              { (!saving && !error) && <p>Thanks, your reply has been saved. </p> }
             </DialogContent>
             <DialogActions>
             {pageIsLast ?
