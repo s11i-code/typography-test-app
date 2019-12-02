@@ -69,6 +69,7 @@ async function scrapeSites() {
 scrapeSites();
 
 async function scrapeSite(site:string, browser: any) {
+
     const page: Page = await browser.newPage();
     await page.exposeFunction("log", console.log);
     await page.exposeFunction("generateId", generateId);

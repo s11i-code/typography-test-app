@@ -18,7 +18,7 @@ export default `
   }
 
   body {
-    color: ${colors.black};
+    color: ${colors.gray.dark};
     width: 100%;
     overflow-x: hidden;
     overflow-y: scroll;
@@ -105,7 +105,7 @@ export default `
   h2 {
     font-size: ${dimensions.headingSizes.h2}%;
     margin-top: 1rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.25rem;
   }
 
   h3 {

@@ -15,7 +15,7 @@ export default `
     color: #fff;
     padding: 0.5rem 1.2rem;
     font-size: 1rem;
-    border-styöe: solid;
+    border-style: solid;
   }
 
   .MuiDialogContent-root {
