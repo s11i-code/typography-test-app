@@ -7,6 +7,10 @@ export default `
     margin-top: 2rem;
   }
 
+  .no-vertical-scroll {
+    overflow-y: hidden;
+  }
+
   .button {
     border-radius: 0;
     background: ${colors.buttonColor};

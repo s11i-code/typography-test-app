@@ -21,7 +21,6 @@ export default `
     color: ${colors.gray.dark};
     width: 100%;
     overflow-x: hidden;
-    overflow-y: scroll;
     background-color: ${colors.gray.silver};
     -webkit-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%;

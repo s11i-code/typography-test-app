@@ -1,7 +1,9 @@
 import { Resolution } from "./types";
 
+export const DEMO_SITE = "https://master.d7s4am5xcgjzr.amplifyapp.com/demo";
+export const isDemoSite = (site:string) => site === DEMO_SITE
 export const sites = [
-    "https://master.d7s4am5xcgjzr.amplifyapp.com/demo",
+    DEMO_SITE,
     "https://www.wikipedia.org",
     "https://github.com/satueveliina",
     "https://stackoverflow.com",

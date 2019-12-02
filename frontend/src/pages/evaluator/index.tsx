@@ -2,13 +2,14 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import Snackbar from "@material-ui/core/Snackbar";
+import Helmet from "react-helmet";
 
 import { globalHistory} from "@reach/router";
 import { API } from "aws-amplify";
 import { Link } from "gatsby";
 import queryString from "query-string";
 import React, {useEffect, useState} from "react";
-import { resolutions, sites } from "../../../../backend/common";
+import { isDemoSite, resolutions, sites } from "../../../../backend/common";
 import { EvaluateSiteRequestParams, GetSiteRequestParams, Sitedata } from "../../../../backend/common/types";
 import Page from "../../components/Page";
 import SiteImageMap from "../../components/SiteImageMap";
@@ -121,6 +122,13 @@ export default function EvaluatorPage(props: {location: Location}) {
       />
       { sitedata &&
         (<>
+          {/* disable scroll down on actual data collection sites*/ }
+          {!isDemoSite(sitedata.siteID) &&
+            (<Helmet
+              bodyAttributes={{
+                  class: "no-vertical-scroll",
+              }}
+            />)}
           <Dialog fullWidth maxWidth="xs" open={selectedElementIDs.length === maxSelectableElements}>
             <DialogContent>
               { saving && <Spinner /> }
