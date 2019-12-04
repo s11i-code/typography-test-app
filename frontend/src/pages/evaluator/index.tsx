@@ -70,7 +70,7 @@ export default function EvaluatorPage(props: {location: Location}) {
     if (newSelectedItems.length === maxSelectableElements) {
       const data: EvaluateSiteRequestParams = {
         resolution: sitedata.resolution,
-        selectedElementIDs,
+        selectedElementIDs: newSelectedItems,
         siteID: sitedata.siteID,
         viewport: {
           height: getViewportHeight(),
