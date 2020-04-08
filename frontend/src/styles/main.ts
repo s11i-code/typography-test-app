@@ -1,4 +1,4 @@
-import { colors } from "./variables";
+import { colors } from './variables'
 
 export default `
   .button-container {
@@ -50,4 +50,4 @@ export default `
       dominant-baseline: text-before-edge;;
     }
   }
-`;
+`

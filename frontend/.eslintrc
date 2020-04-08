@@ -21,16 +21,28 @@
   },
   "plugins": ["react-hooks"],
   "rules": {
+    "no-console": "off",
+    "arrow-parens": "off",
     "max-len": ["error", { "code": 140, "ignoreUrls": true }],
     "import/prefer-default-export": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
     "react-hooks/rules-of-hooks": "error", // Checks rules of Hooks
     "react-hooks/exhaustive-deps": "warn", // Checks effect dependencies
+    "object-curly-newline": [
+      "error",
+      {
+        "ObjectPattern": { "multiline": true, "minProperties": 5 },
+        "ImportDeclaration": "never",
+        "ExportDeclaration": "always"
+      }
+    ],
     "react/no-unescaped-entities": [
       "error",
       {
         "forbid": [{ "char": ">", "alternatives": ["&gt;"] }, { "char": "}", "alternatives": ["&#125;"] }]
       }
-    ]
+    ],
+    "react/destructuring-assignment": "off",
+    "@typescript-eslint/no-use-before-define": "off"
   }
 }

@@ -1,5 +1,5 @@
-import styled from "@emotion/styled";
-import * as React from "react";
+import styled from '@emotion/styled'
+import * as React from 'react'
 
 const InnerContainer = styled.div`
   background-color: white;
@@ -8,22 +8,20 @@ const InnerContainer = styled.div`
   max-width: 700px;
   padding: 2rem;
   margin: 0 auto;
-`;
+`
 
 const OuterContainer = styled.div`
-  margin: 2% 2% ;
-`;
+  margin: 2% 2%;
+`
 
 interface ContainerProps {
-  className?: string;
+  className?: string
 }
 
-const Container: React.FC<ContainerProps> = ({ children, className }) =>
+const Container: React.FC<ContainerProps> = ({ children, className }) => (
   <OuterContainer>
-    <InnerContainer
-    className={className}>
-      {children}
-    </InnerContainer>
-  </OuterContainer>;
+    <InnerContainer className={className}>{children}</InnerContainer>
+  </OuterContainer>
+)
 
-export default Container;
+export default Container

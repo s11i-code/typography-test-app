@@ -1,6 +1,6 @@
-import styled from "@emotion/styled";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import * as React from "react";
+import styled from '@emotion/styled'
+import CircularProgress from '@material-ui/core/CircularProgress'
+import * as React from 'react'
 
 const StyledContainer = styled.div`
   width: 100%;
@@ -8,11 +8,12 @@ const StyledContainer = styled.div`
   justify-content: center;
   flex: 1;
   align-items: center;
-`;
+`
 
-const Container  = () =>
+const Container = () => (
   <StyledContainer>
-      <CircularProgress/>
-  </StyledContainer>;
+    <CircularProgress />
+  </StyledContainer>
+)
 
-export default Container;
+export default Container
