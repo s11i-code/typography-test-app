@@ -37,7 +37,10 @@ export default function EvaluatorPage(props: { location: Location }) {
 
   if (sitedata && selectedElementIDs.length === 0) {
     console.log('------------New site', sitedata.siteID)
-    console.log('Element texts', sitedata.elements.map(({ text }) => text))
+    console.log(
+      'Element texts',
+      sitedata.elements.map(({ text }) => text)
+    )
     console.log('Elements ', sitedata.elements)
   }
 
@@ -60,7 +63,10 @@ export default function EvaluatorPage(props: { location: Location }) {
   function toggleSelectedElementIds(elemId: string): void {
     const alreadySelected = selectedElementIDs.includes(elemId)
     if (!alreadySelected) {
-      console.log('Clicked element', sitedata.elements.filter(({ id }) => id === elemId))
+      console.log(
+        'Clicked element',
+        sitedata.elements.filter(({ id }) => id === elemId)
+      )
     }
     const newSelectedItems = alreadySelected ? selectedElementIDs.filter(id => id !== elemId) : [...selectedElementIDs, elemId]
     setSelectedElementIDs(newSelectedItems)

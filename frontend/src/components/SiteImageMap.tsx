@@ -1,6 +1,5 @@
 import styled from '@emotion/styled'
 import React, { useState } from 'react'
-// @ts-ignore
 import { Element, Sitedata } from '../../../backend/common/types'
 
 const BUCKET_URL = 'https://typography-test-app-scraped-data.s3.eu-central-1.amazonaws.com/'
