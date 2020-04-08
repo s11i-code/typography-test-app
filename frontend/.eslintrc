@@ -1,6 +1,12 @@
 {
   "parser": "@typescript-eslint/parser",
-  "extends": ["eslint-config-blvd/react", "prettier/@typescript-eslint", "prettier/react", "plugin:prettier/recommended"],
+  "extends": [
+    "plugin:prettier/recommended",
+    "eslint-config-blvd/react",
+    "prettier/@typescript-eslint",
+    "prettier/react",
+    "prettier/standard"
+  ],
   "parserOptions": {
     "ecmaVersion": 2018,
     "sourceType": "module",
@@ -13,9 +19,7 @@
       "version": "detect"
     }
   },
-  "plugins": [
-    "react-hooks"
-  ],
+  "plugins": ["react-hooks"],
   "rules": {
     "max-len": ["error", { "code": 140, "ignoreUrls": true }],
     "import/prefer-default-export": "off",
