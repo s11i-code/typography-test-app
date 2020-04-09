@@ -4,8 +4,6 @@
 
 
 data-analysis/flat-site-data/
-# Build directory
-public/
 
 scraper/tmp
 

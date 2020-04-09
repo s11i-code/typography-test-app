@@ -23,11 +23,18 @@ const getSitedata = (site:string, resolution: Resolution) => {
   return s3.getObject(params).promise();
 }
 
+function selectEvaluatedResolution(windowWidth: number): Resolution {
+  // select the closest resolution which is bigger than window width
+  const diffs = resolutions.map(({ width }) => width - windowWidth)
+  const bestIndex =  diffs.reduce((bestIdx, diff, currIdx) => (diff >= 0 && diff < Math.abs(diffs[bestIdx]) ? currIdx : bestIdx), diffs.length - 1)
+  return resolutions[bestIndex]
+}
+
 export const getSites: APIGatewayProxyHandler = async (event, _context) => {
 
   try {
     const params: GetSiteRequestParams = event.queryStringParameters as unknown as GetSiteRequestParams;
-    if(!params || !params.resolutionIdx) {
+    if(!params || !params.windowWidth) {
       return {
         headers,
         statusCode: 400,
@@ -37,7 +44,8 @@ export const getSites: APIGatewayProxyHandler = async (event, _context) => {
       };
     }
 
-    const resolution = resolutions[Number(params.resolutionIdx)];
+    const windowWidth = Number(params.windowWidth)
+    const resolution = selectEvaluatedResolution(windowWidth);
     const responses = await(Promise.all(sites.map((site:string) => getSitedata(site, resolution))));
 
     const sitesdata = responses.map(res => JSON.parse(res.Body.toString('utf-8')));

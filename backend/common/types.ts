@@ -1,43 +1,40 @@
 export type Resolution = {
-    width: number;
-    height: number;
+  width: number
+  height: number
 }
 
 export interface Sitedata {
-    siteID: string,
-    imagePath: string;
-    resolution: Resolution;
-    elements: Element[];
+  siteID: string
+  imagePath: string
+  resolution: Resolution
+  elements: Element[]
 }
 
 export type Rect = {
-    top: number,
-    bottom: number,
-    left: number,
-    right: number,
-    height: number,
-    width: number,
+  top: number
+  bottom: number
+  left: number
+  right: number
+  height: number
+  width: number
 }
 
 export interface Element {
-    id: string;
-    rect: Rect;
-    style: any;
-    text: string;
-    tagName: string;
-    colorData: {
-    }
+  id: string
+  rect: Rect
+  style: any
+  text: string
+  tagName: string
+  colorData: {}
 }
 
 export interface GetSiteRequestParams {
-    resolutionIdx: number;
+  windowWidth: number
 }
 
 export interface EvaluateSiteRequestParams {
-    siteID: string;
-    resolution: Resolution;
-    selectedElementIDs: string[];
-    viewport: Resolution,
+  siteID: string
+  resolution: Resolution
+  selectedElementIDs: string[]
+  viewport: Resolution
 }
-
-

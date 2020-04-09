@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 import React, { useState } from 'react'
-import { Element, Sitedata } from '../../../backend/common/types'
+import { Element, Sitedata } from '../symlinked-types'
 
 const BUCKET_URL = 'https://typography-test-app-scraped-data.s3.eu-central-1.amazonaws.com/'
 
@@ -22,12 +22,11 @@ interface Props {
   onClick: (id: string) => void
   selectedElementIDs: string[]
   maxSelectableElements?: number
-  width: number
 }
 
 const TOOLTIP_SIZE_PX = 25
 export default function SiteImageMap(props: Props) {
-  const { sitedata, selectedElementIDs, width, onClick } = props
+  const { sitedata, selectedElementIDs, onClick } = props
   const { imagePath, elements, resolution } = sitedata
   const [hoveredElement, setHoveredElement] = useState<string | undefined>(undefined)
 
@@ -39,7 +38,7 @@ export default function SiteImageMap(props: Props) {
       {imagePath && (
         <>
           <Img src={`${BUCKET_URL}${imagePath}`} />
-          <Svg width={width} viewBox={`0 0 ${resolution.width} ${resolution.height}`}>
+          <Svg width="100%" viewBox={`0 0 ${resolution.width} ${resolution.height}`}>
             {elements.map(({ rect, id }) => {
               const bordered = hoveredElement === id || selectedElementIDs.includes(id)
               return (
@@ -60,7 +59,7 @@ export default function SiteImageMap(props: Props) {
             })}
 
             {selectedElementIDs.map((id, idx) => {
-              const elem = elements.find(el => el.id === id) as Element
+              const elem = elements.find((el) => el.id === id) as Element
               const { rect } = elem
               const x = rect.left + rect.width - TOOLTIP_SIZE_PX
               const y = rect.top + (rect.height - TOOLTIP_SIZE_PX) / 2

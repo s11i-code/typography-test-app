@@ -3,73 +3,41 @@ import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import Snackbar from '@material-ui/core/Snackbar'
 import Helmet from 'react-helmet'
-
-import { globalHistory } from '@reach/router'
+import { navigate } from '@reach/router'
 import { API } from 'aws-amplify'
-import { Link } from 'gatsby'
 import queryString from 'query-string'
-import React, { useEffect, useState, useCallback } from 'react'
-import { isDemoSite, resolutions, sites } from '../../../../backend/common'
-import { EvaluateSiteRequestParams, GetSiteRequestParams, Sitedata } from '../../../../backend/common/types'
+import React, { useState, MouseEvent } from 'react'
+import { EvaluateSiteRequestParams, Sitedata } from '../../symlinked-types'
+import usePagesdata, { ReturnType as UsePagesdataType } from '../../hooks/usePagesdata'
 import Page from '../../components/Page'
 import SiteImageMap from '../../components/SiteImageMap'
 import Spinner from '../../components/Spinner'
 import { maxSelectableElements } from '../../config'
-import IndexLayout from '../../layouts'
-import { buildIsOngoing, getViewportHeight, getViewportWidth } from '../../utils/window'
+import { getViewportHeight, getViewportWidth } from '../../utils/window'
 
 // TODO make this into a class component, this is getting messy
 
-export default function EvaluatorPage(props: { location: Location }) {
-  const [sitesdata, setSitesdata] = useState<Sitedata[]>([])
+export default function EvaluatorPage() {
+  const [sitesdata, loading, fetchError]: UsePagesdataType = usePagesdata()
   const [selectedElementIDs, setSelectedElementIDs] = useState<string[]>([])
-
-  const [loading, setLoading] = useState(false)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | undefined>(undefined)
 
-  const windowWidth = getViewportWidth()
-
-  const queryParams = queryString.parse((props.location as any).search)
-
+  const queryParams = queryString.parse((window.location as any).search)
   const siteIdx = Number(queryParams.site) ? Number(queryParams.site) : 0
   const sitedata: Sitedata = sitesdata[siteIdx]
+  const isDemoSite = siteIdx === 0
+  const noMorePages = sitesdata.length && siteIdx >= sitesdata.length
 
-  if (sitedata && selectedElementIDs.length === 0) {
-    console.log('------------New site', sitedata.siteID)
-    console.log(
-      'Element texts',
-      sitedata.elements.map(({ text }) => text)
-    )
-    console.log('Elements ', sitedata.elements)
+  if (noMorePages) {
+    // we have gone through all the pages
+    navigate('/thank-you')
   }
-
-  const fetchData = useCallback(async () => {
-    const resolutionIdx = selectEvaluatedResolutionIndex(windowWidth)
-    const queryStringParameters: GetSiteRequestParams = { resolutionIdx }
-    setLoading(true)
-
-    API.get('backend', '/sites', { queryStringParameters })
-      .then(result => {
-        setSitesdata(result.data)
-      })
-      .catch(err => {
-        console.error('Error fetching data', err)
-        setError("Can't fetch data.")
-      })
-      .finally(() => setLoading(false))
-  }, [windowWidth])
-
   function toggleSelectedElementIds(elemId: string): void {
     const alreadySelected = selectedElementIDs.includes(elemId)
-    if (!alreadySelected) {
-      console.log(
-        'Clicked element',
-        sitedata.elements.filter(({ id }) => id === elemId)
-      )
-    }
-    const newSelectedItems = alreadySelected ? selectedElementIDs.filter(id => id !== elemId) : [...selectedElementIDs, elemId]
+    const newSelectedItems = alreadySelected ? selectedElementIDs.filter((id) => id !== elemId) : [...selectedElementIDs, elemId]
     setSelectedElementIDs(newSelectedItems)
+
     if (newSelectedItems.length === maxSelectableElements) {
       const data: EvaluateSiteRequestParams = {
         resolution: sitedata.resolution,
@@ -82,7 +50,7 @@ export default function EvaluatorPage(props: { location: Location }) {
       }
       setSaving(true)
       API.post('backend', '/site/evaluate', { body: data })
-        .catch(err => {
+        .catch((err) => {
           console.error('Error saving data', err)
           setError("Can't save data. ")
         })
@@ -90,45 +58,33 @@ export default function EvaluatorPage(props: { location: Location }) {
     }
   }
 
-  useEffect(() => {
-    if (buildIsOngoing()) {
-      return
-    }
-    // data fetch only happens when component is mounted (once per replier unless they reload)
-    fetchData()
-  }, [fetchData])
-
-  useEffect(() => {
-    // site changed, so reset selected elements
-    globalHistory.listen(({ action }) => {
-      if (action === 'PUSH') {
-        setSelectedElementIDs([])
-      }
-    })
-  }, [])
-
-  const pageIsLast = siteIdx >= sites.length - 1
+  function showNextPage(event: MouseEvent): void {
+    event.preventDefault()
+    // clear previous selections:
+    setSelectedElementIDs([])
+    navigate(`/evaluator/?site=${siteIdx + 1}`)
+  }
 
   return (
-    <IndexLayout>
+    <>
       {loading && <Spinner />}
       <Snackbar
         anchorOrigin={{
           horizontal: 'left',
           vertical: 'top'
         }}
-        open={error !== undefined}
+        open={!!(error || fetchError)}
         autoHideDuration={8000}
         onClose={() => setError(undefined)}
         ContentProps={{
           'aria-describedby': 'error-id'
         }}
-        message={<span id="error-id">{error}</span>}
+        message={<span id="error-id">{error || fetchError}</span>}
       />
       {sitedata && (
         <>
           {/* disable scroll down on actual data collection sites */}
-          {!isDemoSite(sitedata.siteID) && (
+          {!isDemoSite && (
             <Helmet
               bodyAttributes={{
                 class: 'no-vertical-scroll'
@@ -141,36 +97,21 @@ export default function EvaluatorPage(props: { location: Location }) {
               {!saving && !error && <p>Thanks, your reply has been saved. </p>}
             </DialogContent>
             <DialogActions>
-              {pageIsLast ? (
-                <Link className="button small" to="/thank-you">
-                  Next site
-                </Link>
-              ) : (
-                <Link className="button small" to={`/evaluator/?site=${siteIdx + 1}`}>
-                  Next site
-                </Link>
-              )}
+              <button type="button" className="button small" onClick={showNextPage}>
+                Next site
+              </button>
             </DialogActions>
           </Dialog>
           <Page>
-            {Object.keys(sitedata).length > 1 && (
-              <SiteImageMap
-                onClick={toggleSelectedElementIds}
-                selectedElementIDs={selectedElementIDs}
-                sitedata={sitedata}
-                maxSelectableElements={maxSelectableElements}
-                width={windowWidth}
-              />
-            )}
+            <SiteImageMap
+              onClick={toggleSelectedElementIds}
+              selectedElementIDs={selectedElementIDs}
+              sitedata={sitedata}
+              maxSelectableElements={maxSelectableElements}
+            />
           </Page>
         </>
       )}
-    </IndexLayout>
+    </>
   )
-}
-
-function selectEvaluatedResolutionIndex(windowWidth: number): number {
-  // select the closest resolution which is bigger than window width
-  const diffs = resolutions.map(({ width }) => width - windowWidth)
-  return diffs.reduce((bestIdx, diff, currIdx) => (diff >= 0 && diff < Math.abs(diffs[bestIdx]) ? currIdx : bestIdx), diffs.length - 1)
 }

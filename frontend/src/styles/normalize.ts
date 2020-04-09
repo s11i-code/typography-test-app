@@ -25,6 +25,7 @@ export default `
     -webkit-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%;
     font-family: ${fonts.body};
+    margin: 0;
   }
 
   b {
