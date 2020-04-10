@@ -97,13 +97,15 @@ export default `
   }
 
   h1 {
-    font-size: ${dimensions.headingSizes.h1}%
+    font-size: ${dimensions.headingSizes.h1}%;
+    margin-bottom: 1em;
+
   }
 
   h2 {
     font-size: ${dimensions.headingSizes.h2}%;
-    margin-top: 1.5rem;
-    margin-bottom: 0.5rem;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
   }
 
   h3 {
