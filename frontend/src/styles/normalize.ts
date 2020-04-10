@@ -25,16 +25,14 @@ export default `
     -webkit-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%;
     font-family: ${fonts.body};
+    font-weight: ${fonts.bodyWeight};
     margin: 0;
   }
 
   b {
-    font-weight: 600;
+    font-weight: ${fonts.headingWeight};
   }
-  p {
-    font-weight: 300;
 
-  }
   a {
     color: #1f5e60;
     text-decoration: none;
@@ -92,7 +90,7 @@ export default `
 
   h1, h2, h3, h4, h5, h6 {
     font-family: ${fonts.heading};
-    font-weight: 400;
+    font-weight: ${fonts.headingWeight};
     line-height: ${dimensions.lineHeight.heading};
     text-rendering: optimizeLegibility;
     margin: 0;
@@ -104,8 +102,8 @@ export default `
 
   h2 {
     font-size: ${dimensions.headingSizes.h2}%;
-    margin-top: 1rem;
-    margin-bottom: 0.25rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
   }
 
   h3 {
@@ -118,7 +116,7 @@ export default `
 
   p {
     margin-top: 0;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
   }
 
   strong {
