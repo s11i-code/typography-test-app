@@ -2,7 +2,7 @@ import { APIGatewayProxyHandler } from 'aws-lambda';
 import 'source-map-support/register';
 import S3 from 'aws-sdk/clients/s3';
 import DynamoDB from 'aws-sdk/clients/dynamodb';
-import { sites, resolutions, getS3FolderPath } from '../common/index';
+import { sites, resolutions, getS3FolderPath, FRONTEND_URL } from '../common/index';
 import { Resolution, GetSiteRequestParams } from '../common/types';
 
 import uuid from 'uuid';
@@ -11,7 +11,7 @@ const dynamoDb = new DynamoDB.DocumentClient();
 const s3 = new S3();
 
 const headers = {
-  'Access-Control-Allow-Origin': 'https://master.d7s4am5xcgjzr.amplifyapp.com',
+  'Access-Control-Allow-Origin': FRONTEND_URL,
   'Access-Control-Allow-Credentials': true,
 };
 

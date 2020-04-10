@@ -1,7 +1,7 @@
 import { Resolution } from "./types";
 
-export const DEMO_SITE = "https://master.d7s4am5xcgjzr.amplifyapp.com/demo";
-export const isDemoSite = (site:string) => site === DEMO_SITE
+export const FRONTEND_URL = "https://master.d1x9kwinmjne9c.amplifyapp.com"
+export const DEMO_SITE = `${FRONTEND_URL}/demo`;
 export const sites = [
     DEMO_SITE,
     "https://www.wikipedia.org",
